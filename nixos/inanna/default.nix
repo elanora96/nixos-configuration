@@ -11,7 +11,8 @@
 
 {
   imports = [
-    ./hardware-configuration.nix # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./homelab.nix
   ];
 
   nix.settings.experimental-features = [
@@ -19,16 +20,7 @@
     "flakes"
   ];
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    # For Sonarr v4
-    permittedInsecurePackages = [
-      "dotnet-sdk-6.0.428"
-      "dotnet-sdk-wrapped-6.0.36"
-      "aspnetcore-runtime-6.0.36"
-      "aspnetcore-runtime-wrapped-6.0.428"
-    ];
-  };
+  nixpkgs.config.allowUnfree = true;
 
   boot = {
     loader = {
@@ -43,7 +35,10 @@
     hostName = "inanna";
     networkmanager.enable = true;
 
-    firewall.allowedTCPPorts = [ 8000 3030 ];
+    firewall.allowedTCPPorts = [
+      8000
+      3030
+    ];
   };
 
   time.timeZone = "America/Los_Angeles";
@@ -51,45 +46,20 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   services = {
-    plex = {
-      enable = true;
-      openFirewall = true;
-      user = "el";
-    };
-
-    jellyfin = {
-	enable = true;
-	user = "el";
-    };
-
-    radarr = {
-      enable = true;
-      openFirewall = true;
-      user = "el";
-    };
-
-    sonarr = {
-      enable = true;
-      openFirewall = true;
-      user = "el";
-      package = pkgs.sonarr.overrideAttrs (lib.const { doCheck = false; });
-    };
-
-    prowlarr = {
-	enable = true;
-	openFirewall = true;
-    };
-
-    tailscale.enable = true;
-
-    xserver.videoDrivers = [ "nvidia" ];
+    desktopManager.plasma6.enable = true;
 
     displayManager.sddm = {
       enable = true;
       wayland.enable = true;
     };
 
-    desktopManager.plasma6.enable = true;
+    hardware.openrgb = {
+      enable = true;
+      package = pkgs.openrgb-with-all-plugins;
+      motherboard = "amd";
+    };
+
+    openssh.enable = true;
 
     pipewire = {
       enable = true;
@@ -98,15 +68,11 @@
       wireplumber.enable = true;
     };
 
-    openssh.enable = true;
-
     printing.enable = true;
 
-    hardware.openrgb = {
-      enable = true;
-      package = pkgs.openrgb-with-all-plugins;
-      motherboard = "amd";
-    };
+    tailscale.enable = true;
+
+    xserver.videoDrivers = [ "nvidia" ];
   };
 
   hardware = {
@@ -131,8 +97,6 @@
     };
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     bottom
     fd
