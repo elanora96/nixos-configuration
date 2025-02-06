@@ -17,7 +17,7 @@
           system = "x86_64-linux";
           specialArgs = attrs;
           modules = [
-            ./inanna-configuration.nix
+            ./nixos/inanna
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
