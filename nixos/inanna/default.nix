@@ -12,6 +12,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./homelab.nix
   ];
 
   nix.settings.experimental-features = [
