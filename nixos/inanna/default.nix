@@ -13,6 +13,7 @@
   imports = [
     ./hardware-configuration.nix
     ./homelab.nix
+    ./traefik.nix
   ];
 
   nix.settings.experimental-features = [
@@ -72,14 +73,12 @@
 
     tailscale.enable = true;
 
-    xserver.videoDrivers = [ "nvidia" ];
   };
 
   hardware = {
     graphics.enable = true;
 
     nvidia = {
-      modesetting.enable = true;
       powerManagement.finegrained = false;
       open = false;
       nvidiaSettings = true;
@@ -101,9 +100,11 @@
     bottom
     fd
     lsd
+    ntfs2btrfs
     wget
     ripgrep
     watchman
+    waypipe
   ];
 
   environment.pathsToLink = [ "/share/zsh" ];
@@ -131,6 +132,19 @@
       autosuggestions.enable = true;
       enableCompletion = true;
       syntaxHighlighting.enable = true;
+    };
+  };
+
+  homelab = {
+    enable = true;
+    domain = "inanna.internal";
+    storage = "/mnt/media";
+    traefik = {
+      enable = true;
+      docker.enable = true;
+      services.cache = {
+        port = 5000;
+      };
     };
   };
 

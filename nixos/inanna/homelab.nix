@@ -1,47 +1,77 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
-  hl = config.homelab;
+  cfg = config.homelab;
 in
 {
-  nixpkgs.config = {
-    # For Sonarr v4
-    permittedInsecurePackages = [
+  imports = [ ./traefik.nix ];
+
+  options.homelab = {
+    enable = lib.mkEnableOption "homelab";
+    domain = lib.mkOption {
+      type = lib.types.str;
+    };
+    storage = lib.mkOption {
+      type = lib.types.str;
+      default = "/mnt/media";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    # TODO: For Sonarr v4, provide if v4?
+    nixpkgs.config.permittedInsecurePackages = [
       "dotnet-sdk-6.0.428"
       "dotnet-sdk-wrapped-6.0.36"
       "aspnetcore-runtime-6.0.36"
       "aspnetcore-runtime-wrapped-6.0.428"
     ];
-  };
 
-  services = {
-    plex = {
+    homelab.traefik = {
       enable = true;
-      openFirewall = true;
-      user = "el";
+      services = {
+        plex.port = 32400;
+        jellyfin.port = 8096;
+        sonarr.port = 8989;
+        radarr.port = 7878;
+        prowlarr.port = 9696;
+      };
     };
 
-    jellyfin = {
-      enable = true;
-      user = "el";
-    };
+    services = {
+      plex = {
+        enable = true;
+        openFirewall = true;
+        user = "el";
+      };
 
-    radarr = {
-      enable = true;
-      openFirewall = true;
-      user = "el";
-    };
+      jellyfin = {
+        enable = true;
+        user = "el";
+      };
 
-    sonarr = {
-      enable = true;
-      openFirewall = true;
-      user = "el";
-      package = pkgs.sonarr.overrideAttrs (lib.const { doCheck = false; });
-    };
+      radarr = {
+        enable = true;
+        openFirewall = true;
+        user = "el";
+      };
 
-    prowlarr = {
-      enable = true;
-      openFirewall = true;
+      sonarr = {
+        enable = true;
+        openFirewall = true;
+        user = "el";
+        # TODO: For Sonarr v4, provide if v4?
+        package = pkgs.sonarr.overrideAttrs (lib.const { doCheck = false; });
+      };
+
+      prowlarr = {
+        enable = true;
+        openFirewall = true;
+      };
     };
   };
 }
