@@ -2,12 +2,7 @@
 # https://search.nixos.org/options
 # nixos-help
 
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -29,7 +24,11 @@
       efi.canTouchEfiVariables = true;
     };
 
-    kernelParams = [ "nvidia-drm.modeset=1" ];
+    initrd.kernelModules = [
+      "nvidia"
+      "nvidia_modeset"
+      "nvidia_drm"
+    ];
   };
 
   networking = {
@@ -67,6 +66,12 @@
       pulse.enable = true;
       jack.enable = true;
       wireplumber.enable = true;
+
+      extraConfig.pipewire."92-low-latency" = {
+        "context.properties" = {
+          "default.clock.rate" = 48000;
+        };
+      };
     };
 
     printing.enable = true;
@@ -79,6 +84,7 @@
     graphics.enable = true;
 
     nvidia = {
+      modesetting.enable = true;
       powerManagement.finegrained = false;
       open = false;
       nvidiaSettings = true;
@@ -100,11 +106,12 @@
     bottom
     fd
     lsd
+    nil
     ntfs2btrfs
-    wget
     ripgrep
     watchman
     waypipe
+    wget
   ];
 
   environment.pathsToLink = [ "/share/zsh" ];

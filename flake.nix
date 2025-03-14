@@ -17,30 +17,45 @@
       home-manager,
       nixos-hardware,
       ...
-    }@attrs:
+    }@inputs:
     let
-      hmCfg = {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
+      home-manager-cfg-el = {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
 
-        home-manager.users.el = import ./el-home.nix;
+          users = {
+            el = import ./home-manager/el-home.nix;
+          };
+        };
       };
     in
     {
       nixosConfigurations = {
         inanna = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = attrs;
-          modules = [
-            ./nixos/inanna
-            nixos-hardware.nixosModules.common-cpu-amd
-            nixos-hardware.nixosModules.common-cpu-amd-pstate
-            nixos-hardware.nixosModules.common-cpu-amd-zenpower
-            nixos-hardware.nixosModules.common-pc-ssd
-            nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
-            home-manager.nixosModules.home-manager
-            hmCfg
-          ];
+          specialArgs = inputs;
+          modules =
+            [
+              # local nixos module(s)
+              ./nixos/inanna
+            ]
+            ++ [
+              # Home-Manager
+              home-manager.nixosModules.home-manager
+              home-manager-cfg-el
+            ]
+            ++ [
+              # nixos-hardware
+              # R7 3700x
+              nixos-hardware.nixosModules.common-cpu-amd
+              nixos-hardware.nixosModules.common-cpu-amd-pstate
+              nixos-hardware.nixosModules.common-cpu-amd-zenpower
+              # SSDs
+              nixos-hardware.nixosModules.common-pc-ssd
+              # GTX 1070
+              nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
+            ];
         };
       };
     };
