@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -23,14 +22,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # TODO: For Sonarr v4, provide if v4?
-    nixpkgs.config.permittedInsecurePackages = [
-      "dotnet-sdk-6.0.428"
-      "dotnet-sdk-wrapped-6.0.36"
-      "aspnetcore-runtime-6.0.36"
-      "aspnetcore-runtime-wrapped-6.0.428"
-    ];
-
     homelab.traefik = {
       enable = true;
       services = {
@@ -64,8 +55,6 @@ in
         enable = true;
         openFirewall = true;
         user = "el";
-        # TODO: For Sonarr v4, provide if v4?
-        package = pkgs.sonarr.overrideAttrs (lib.const { doCheck = false; });
       };
 
       prowlarr = {

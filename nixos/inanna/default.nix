@@ -2,7 +2,7 @@
 # https://search.nixos.org/options
 # nixos-help
 
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -11,10 +11,14 @@
     ./traefik.nix
   ];
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+
+    download-buffer-size = 524288000;
+  };
 
   nixpkgs.config.allowUnfree = true;
 
@@ -23,12 +27,6 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-
-    initrd.kernelModules = [
-      "nvidia"
-      "nvidia_modeset"
-      "nvidia_drm"
-    ];
   };
 
   networking = {
@@ -48,15 +46,12 @@
   services = {
     desktopManager.plasma6.enable = true;
 
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
-
-    hardware.openrgb = {
-      enable = true;
-      package = pkgs.openrgb-with-all-plugins;
-      motherboard = "amd";
+    displayManager = {
+      defaultSession = "plasma";
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
     };
 
     openssh.enable = true;
@@ -67,29 +62,16 @@
       jack.enable = true;
       wireplumber.enable = true;
 
-      extraConfig.pipewire."92-low-latency" = {
-        "context.properties" = {
-          "default.clock.rate" = 48000;
-        };
-      };
+      # extraConfig.pipewire."92-low-latency" = {
+      #   "context.properties" = {
+      #     "default.clock.rate" = 48000;
+      #   };
+      # };
     };
 
     printing.enable = true;
 
     tailscale.enable = true;
-
-  };
-
-  hardware = {
-    graphics.enable = true;
-
-    nvidia = {
-      modesetting.enable = true;
-      powerManagement.finegrained = false;
-      open = false;
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
-    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -102,19 +84,22 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    bottom
-    fd
-    lsd
-    nil
-    ntfs2btrfs
-    ripgrep
-    watchman
-    waypipe
-    wget
-  ];
-
-  environment.pathsToLink = [ "/share/zsh" ];
+  environment = {
+    pathsToLink = [ "/share/zsh" ];
+    sessionVariables.NIXOS_OZONE_WL = "1";
+    systemPackages = with pkgs; [
+      bottom
+      fd
+      lsd
+      nil
+      ntfs2btrfs
+      ripgrep
+      uv
+      watchman
+      waypipe
+      wget
+    ];
+  };
 
   programs = {
     git = {

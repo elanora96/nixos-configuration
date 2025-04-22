@@ -6,12 +6,13 @@
     homeDirectory = "/home/el";
     packages = with pkgs; [
       chezmoi
+      jellyfin-ffmpeg
       meslo-lgs-nf
       nil
       nixfmt-rfc-style
       qbittorrent
       qrcp
-      signal-desktop
+      signal-desktop-bin
       steam-unwrapped
       thunderbird
       vscodium
