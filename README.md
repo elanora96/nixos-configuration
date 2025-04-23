@@ -1,0 +1,3 @@
+# elanora96 nixos-configuration
+
+Stay tuned, at some point this will manage much more than one desktop...
