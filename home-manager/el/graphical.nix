@@ -8,7 +8,6 @@
       meslo-lgs-nf
       qbittorrent
       signal-desktop-bin
-      steam-unwrapped
       thunderbird
       vscodium
       zoom-us
