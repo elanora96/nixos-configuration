@@ -4,7 +4,6 @@
 
   programs = {
     keychain = {
-      agents = [ "ssh" ];
       enable = true;
       enableZshIntegration = true;
       keys = [

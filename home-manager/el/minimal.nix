@@ -56,6 +56,14 @@
       enable = true;
     };
 
+    starship = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        add_newline = false;
+      };
+    };
+
     tealdeer.enable = true;
 
     zsh = {
