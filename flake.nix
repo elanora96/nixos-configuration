@@ -19,6 +19,8 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
   outputs =
@@ -78,5 +80,14 @@
       nixosConfigurations = {
         inherit inanna;
       };
+
+      # formatter = inputs.nixpkgs.legacyPackages.${system}.treefmt.withConfig {
+      #      runtimeInputs = with pkgs; [
+      #        nixfmt
+      #        deadnix
+      #        keep-sorted
+      #      ];
+      #      settings = pkgs.lib.importTOML ./treefmt.toml;
+      #    };
     };
 }

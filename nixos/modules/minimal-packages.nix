@@ -5,8 +5,9 @@
     bottom
     fd
     lsd
-    nil
+    nixfmt-rfc-style
     ripgrep
     wget
+    zellij
   ];
 }

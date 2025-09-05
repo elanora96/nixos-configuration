@@ -6,6 +6,8 @@
   home = {
     packages = with pkgs; [
       meslo-lgs-nf
+      nuclear
+      ollama
       qbittorrent
       signal-desktop-bin
       thunderbird

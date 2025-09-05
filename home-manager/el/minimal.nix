@@ -56,6 +56,29 @@
       enable = true;
     };
 
+    sheldon = {
+      enable = true;
+      enableZshIntegration = true;
+      # plugins = {
+      #   elanora96-zsh-plugins = {
+      #     github = "elanora96/zsh-plugins";
+      #   };
+      #   zsh-syntax-highlighting = {
+      #     github = "zsh-users/zsh-syntax-highlighting";
+      #     apply = [ "defer" ];
+      #   };
+      #   zsh-autosuggestions = {
+      #     github = "zsh-users/zsh-autosuggestions";
+      #     apply = [ "defer" ];
+      #   };
+      # };
+      # templates = {
+      #   defer = ''
+      #     {{ hooks | get: "pre" | nl }}{% for file in files %}zsh-defer source "{{ file }}"
+      #     {% endfor %}{{ hooks | get: "post" | nl }}'';
+      # };
+    };
+
     starship = {
       enable = true;
       enableZshIntegration = true;
@@ -65,6 +88,14 @@
     };
 
     tealdeer.enable = true;
+
+    zellij = {
+      enable = true;
+      enableZshIntegration = true;
+      settings = {
+        theme = "gruvbox-dark";
+      };
+    };
 
     zsh = {
       autosuggestion.enable = true;

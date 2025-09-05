@@ -26,7 +26,7 @@
       powerManagement.finegrained = false;
       # Unavailable for pascal desktop
       open = false;
-      nvidiaPersistenced = true;
+      # nvidiaPersistenced = true;
       nvidiaSettings = true;
       # As of 2025 beta releases are stable enough with large Wayland improvements
       package = config.boot.kernelPackages.nvidiaPackages.beta;
