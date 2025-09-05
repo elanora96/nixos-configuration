@@ -21,6 +21,9 @@
     };
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    # nixvim - Configure Neovim with Nix!
+    nixvim.url = "github:nix-community/nixvim";
   };
 
   outputs =
