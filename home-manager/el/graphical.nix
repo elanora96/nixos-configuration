@@ -7,11 +7,11 @@
     packages = with pkgs; [
       meslo-lgs-nf
       nuclear
-      ollama
       qbittorrent
       signal-desktop-bin
       thunderbird
       vscodium
+      zed-editor
       zoom-us
       zsh-powerlevel10k
     ];

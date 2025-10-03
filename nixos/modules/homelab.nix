@@ -8,8 +8,6 @@ let
   cfg = config.homelab;
 in
 {
-  imports = [ ./traefik.nix ];
-
   options.homelab = {
     enable = lib.mkEnableOption "homelab";
     domain = lib.mkOption {
@@ -22,16 +20,16 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    homelab.traefik = {
-      enable = true;
-      services = {
-        plex.port = 32400;
-        jellyfin.port = 8096;
-        sonarr.port = 8989;
-        radarr.port = 7878;
-        prowlarr.port = 9696;
-      };
-    };
+    # homelab.traefik = {
+    #   enable = true;
+    #   services = {
+    #     plex.port = 32400;
+    #     jellyfin.port = 8096;
+    #     sonarr.port = 8989;
+    #     radarr.port = 7878;
+    #     prowlarr.port = 9696;
+    #   };
+    # };
 
     services = {
       plex = {
@@ -42,6 +40,7 @@ in
 
       jellyfin = {
         enable = true;
+        openFirewall = true;
         user = "el";
       };
 
@@ -64,7 +63,6 @@ in
 
       traefik = {
         enable = true;
-
         staticConfigOptions = {
           entryPoints = {
             web = {

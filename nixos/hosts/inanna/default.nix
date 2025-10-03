@@ -50,7 +50,7 @@
 
     users.el = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "media" ];
     };
   };
 
@@ -96,13 +96,13 @@
     enable = true;
     domain = "inanna.internal";
     storage = "/mnt/media";
-    traefik = {
-      enable = true;
-      docker.enable = true;
-      services.cache = {
-        port = 5000;
-      };
-    };
+    # traefik = {
+    #   enable = true;
+    #   docker.enable = true;
+    #   services.cache = {
+    #     port = 5000;
+    #   };
+    # };
   };
 
   time.timeZone = "America/Los_Angeles";

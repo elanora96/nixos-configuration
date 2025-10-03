@@ -20,77 +20,94 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    # My preferred flake framework
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
 
     # nixvim - Configure Neovim with Nix!
     nixvim.url = "github:nix-community/nixvim";
+
+    # treefmt for nix
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     inputs:
-    let
-      nixosModules = {
-        # Enables unfree packages, nix command, and flakes
-        common-nix = ./nixos/modules/common-nix.nix;
-        # Just kde
-        graphical = ./nixos/modules/graphical.nix;
-        # Selfhosting things
-        homelab = ./nixos/modules/homelab.nix;
-        traefik = ./nixos/modules/traefik.nix;
-        # Networking
-        openssh = ./nixos/modules/openssh.nix;
-        printing = ./nixos/modules/printing.nix;
-        tailscale = ./nixos/modules/tailscale.nix;
-        # Home-Manager
-        hm = inputs.home-manager.nixosModules.home-manager;
-        # Nur overlay
-        nur = inputs.nur.modules.nixos.default;
-        # Host inanna specific
-        inanna-modules = {
-          system-module = ./nixos/hosts/inanna;
-          hm-cfg = {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.el = import ./home-manager/hosts/inanna.nix;
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
+      imports = [
+        inputs.treefmt-nix.flakeModule
+      ];
+      perSystem =
+        { self', ... }:
+        let
+          nixosModules = {
+            # Enables unfree packages, nix command, and flakes
+            common-nix = ./nixos/modules/common-nix.nix;
+            # Just kde
+            graphical = ./nixos/modules/graphical.nix;
+            # Selfhosting things
+            homelab = ./nixos/modules/homelab.nix;
+            # Networking
+            openssh = ./nixos/modules/openssh.nix;
+            printing = ./nixos/modules/printing.nix;
+            tailscale = ./nixos/modules/tailscale.nix;
+            # Home-Manager
+            hm = inputs.home-manager.nixosModules.home-manager;
+            # Nur overlay
+            nur = inputs.nur.modules.nixos.default;
+            # Host inanna specific
+            inanna-modules = {
+              system-module = ./nixos/hosts/inanna;
+              hm-cfg = {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  users.el = import ./home-manager/hosts/inanna.nix;
+                };
+              };
+            };
+          };
+          # My primary desktop system
+          inanna = inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            specialArgs = {
+              inherit inputs;
+            };
+            modules = with nixosModules; [
+              common-nix
+              graphical
+              homelab
+              openssh
+              printing
+              tailscale
+              hm
+              nur
+              inanna-modules.system-module
+              inanna-modules.hm-cfg
+            ];
+          };
+        in
+        {
+          inherit nixosModules;
+          nixosConfigurations = {
+            inherit inanna;
+          };
+
+          treefmt = {
+            projectRootFile = "flake.nix";
+            programs = {
+              deadnix.enable = true;
+              mdformat.enable = true;
+              nixfmt.enable = true;
+              statix.enable = true;
             };
           };
         };
-      };
-
-      # My primary desktop system
-      inanna = inputs.nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
-        };
-        modules = with nixosModules; [
-          common-nix
-          graphical
-          homelab
-          openssh
-          printing
-          tailscale
-          traefik
-          hm
-          nur
-          inanna-modules.system-module
-          inanna-modules.hm-cfg
-        ];
-      };
-    in
-    {
-      nixosConfigurations = {
-        inherit inanna;
-      };
-
-      # formatter = inputs.nixpkgs.legacyPackages.${system}.treefmt.withConfig {
-      #      runtimeInputs = with pkgs; [
-      #        nixfmt
-      #        deadnix
-      #        keep-sorted
-      #      ];
-      #      settings = pkgs.lib.importTOML ./treefmt.toml;
-      #    };
     };
 }
