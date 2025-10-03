@@ -14,12 +14,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Nix User Repository
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # My preferred flake framework
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
@@ -42,9 +36,22 @@
       systems = [ "x86_64-linux" ];
       imports = [
         inputs.treefmt-nix.flakeModule
+        inputs.home-manager.flakeModules.home-manager
       ];
-      perSystem =
-        { self', ... }:
+      perSystem = _: {
+        debug = true;
+        treefmt = {
+          projectRootFile = "flake.nix";
+          programs = {
+            deadnix.enable = true;
+            mdformat.enable = true;
+            nixfmt.enable = true;
+            statix.enable = true;
+          };
+        };
+      };
+      flake =
+        _:
         let
           nixosModules = {
             # Enables unfree packages, nix command, and flakes
@@ -59,8 +66,6 @@
             tailscale = ./nixos/modules/tailscale.nix;
             # Home-Manager
             hm = inputs.home-manager.nixosModules.home-manager;
-            # Nur overlay
-            nur = inputs.nur.modules.nixos.default;
             # Host inanna specific
             inanna-modules = {
               system-module = ./nixos/hosts/inanna;
@@ -73,41 +78,30 @@
               };
             };
           };
-          # My primary desktop system
-          inanna = inputs.nixpkgs.lib.nixosSystem {
-            system = "x86_64-linux";
-            specialArgs = {
-              inherit inputs;
-            };
-            modules = with nixosModules; [
-              common-nix
-              graphical
-              homelab
-              openssh
-              printing
-              tailscale
-              hm
-              nur
-              inanna-modules.system-module
-              inanna-modules.hm-cfg
-            ];
-          };
         in
         {
-          inherit nixosModules;
-          nixosConfigurations = {
-            inherit inanna;
-          };
 
-          treefmt = {
-            projectRootFile = "flake.nix";
-            programs = {
-              deadnix.enable = true;
-              mdformat.enable = true;
-              nixfmt.enable = true;
-              statix.enable = true;
+          nixosConfigurations = {
+            # My primary desktop system
+            inanna = inputs.nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+              specialArgs = {
+                inherit inputs;
+              };
+              modules = with nixosModules; [
+                common-nix
+                graphical
+                homelab
+                openssh
+                printing
+                tailscale
+                hm
+                inanna-modules.system-module
+                inanna-modules.hm-cfg
+              ];
             };
           };
+
         };
     };
 }

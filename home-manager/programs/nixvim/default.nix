@@ -3,7 +3,7 @@
 
   imports = [
     inputs.home
-    inputs.nixvim.homeManagerModules.nixvim
+    inputs.nixvim.homeModules.nixvim
   ];
 
   programs.nixvim = {
@@ -13,9 +13,8 @@
     vimAlias = true;
 
     luaLoader.enable = true;
-    extraConfigLua = ''
-    '';
+    extraConfigLua = '''';
 
-    plugins = {};
+    plugins = { };
   };
 }

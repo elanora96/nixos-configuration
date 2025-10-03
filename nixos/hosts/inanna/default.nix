@@ -50,7 +50,10 @@
 
     users.el = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "media" ];
+      extraGroups = [
+        "wheel"
+        "media"
+      ];
     };
   };
 
