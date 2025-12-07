@@ -24,13 +24,29 @@
     hostName = "inanna";
     networkmanager.enable = true;
 
-    firewall.allowedTCPPorts = [
-      8000
-      3030
-    ];
+    firewall = {
+      allowedTCPPorts = [
+        8000
+        3030
+      ];
+    };
+
+    resolvconf = {
+      enable = true;
+      extraConfig = ''
+        dynamic_order='tap[0-9]* tun[0-9]* vpn* vpn[0-9]* wg* wg[0-9]* ppp[0-9]* ippp[0-9]*'
+      '';
+    };
   };
 
   services = {
+    mullvad-vpn = {
+      enable = true;
+      package = pkgs.mullvad-vpn;
+    };
+
+    resolved.enable = true;
+
     pipewire = {
       enable = true;
       pulse.enable = true;

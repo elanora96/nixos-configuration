@@ -7,5 +7,6 @@
     uv
     watchman
     waypipe
+    wireguard-tools
   ];
 }
