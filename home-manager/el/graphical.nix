@@ -6,7 +6,6 @@
   home = {
     packages = with pkgs; [
       meslo-lgs-nf
-      nuclear
       qbittorrent
       signal-desktop-bin
       thunderbird
