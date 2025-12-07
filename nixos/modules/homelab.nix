@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -32,12 +33,6 @@ in
     # };
 
     services = {
-      plex = {
-        enable = true;
-        openFirewall = true;
-        user = "el";
-      };
-
       jellyfin = {
         enable = true;
         openFirewall = true;
@@ -98,11 +93,6 @@ in
 
         dynamicConfigOptions = {
           routers = {
-            plex = {
-              entryPoints = [ "websecure" ];
-              rule = "Host(`plex.${cfg.domain}`)";
-              service = "plex";
-            };
             jellyfin = {
               entryPoints = [ "websecure" ];
               rule = "Host(`jellyfin.${cfg.domain}`)";
@@ -125,13 +115,6 @@ in
             };
           };
           services = {
-            plex = {
-              loadBalancer = {
-                servers = [
-                  { url = "http://plex:32400"; }
-                ];
-              };
-            };
             jellyfin = {
               loadBalancer = {
                 servers = [
