@@ -28,6 +28,12 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Atomic secret provisioning based on sops
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -64,6 +70,8 @@
             openssh = ./nixos/modules/openssh.nix;
             printing = ./nixos/modules/printing.nix;
             tailscale = ./nixos/modules/tailscale.nix;
+            # Slop
+            llm = ./nixos/modules/llm.nix;
             # Home-Manager
             hm = inputs.home-manager.nixosModules.home-manager;
             # Host inanna specific
@@ -95,9 +103,11 @@
                 openssh
                 printing
                 tailscale
+                llm
                 hm
                 inanna-modules.system-module
                 inanna-modules.hm-cfg
+                inputs.sops-nix.nixosModules.sops
               ];
             };
           };
