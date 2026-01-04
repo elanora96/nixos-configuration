@@ -32,6 +32,10 @@ in
     #   };
     # };
 
+    environment.systemPackages = with pkgs; [
+      qbittorrent-nox
+    ];
+
     services = {
       jellyfin = {
         enable = true;
@@ -46,6 +50,12 @@ in
       };
 
       sonarr = {
+        enable = true;
+        openFirewall = true;
+        user = "el";
+      };
+
+      lidarr = {
         enable = true;
         openFirewall = true;
         user = "el";
