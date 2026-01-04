@@ -11,7 +11,15 @@
     inputs.nixos-hardware.nixosModules.common-pc-ssd
   ];
 
-  nix.settings.download-buffer-size = 524288000;
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+    optimise.automatic = true;
+    settings.download-buffer-size = 524288000;
+  };
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -27,7 +35,15 @@
     firewall = {
       allowedTCPPorts = [
         8000
+        8080
         3030
+        7470
+      ];
+      allowedUDPPortRanges = [
+        {
+          from = 8000;
+          to = 8100;
+        }
       ];
     };
 
