@@ -11,6 +11,7 @@
       chezmoi
       jellyfin-ffmpeg
       nil
+      nixd
       nixfmt-rfc-style
       qrcp
     ];
@@ -18,15 +19,18 @@
 
   programs = {
     bottom.enable = true;
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+    };
     fastfetch.enable = true;
     fd.enable = true;
     gh.enable = true;
 
     git = {
-      delta.enable = true;
       enable = true;
-      userName = "Elanora Manson";
-      userEmail = "git@elanora.lol";
+      settings.user.name = "Elanora Manson";
+      settings.user.email = "git@elanora.lol";
     };
 
     jq.enable = true;
@@ -54,6 +58,7 @@
 
     ssh = {
       enable = true;
+      enableDefaultConfig = true;
     };
 
     sheldon = {
