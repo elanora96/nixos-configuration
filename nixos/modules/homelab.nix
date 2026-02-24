@@ -21,141 +21,67 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # homelab.traefik = {
-    #   enable = true;
-    #   services = {
-    #     plex.port = 32400;
-    #     jellyfin.port = 8096;
-    #     sonarr.port = 8989;
-    #     radarr.port = 7878;
-    #     prowlarr.port = 9696;
-    #   };
-    # };
-
     environment.systemPackages = with pkgs; [
       qbittorrent-nox
     ];
 
+    # security.acme = {
+    #   acceptTerms = true;
+    #   defaults = {
+    #     email = "admin@${cfg.domain}";
+    #     webroot = "/var/lib/acme/acme-challenge";
+    #   };
+    #   certs."${cfg.domain}" = {
+    #     inherit (config.services.caddy) group;
+    #     extraDomainNames = [
+    #       "*.internal.${cfg.domain}"
+    #     ];
+    #   };
+    # };
+
     services = {
+      # keep-sorted start block=yes
+
+      # caddy = {
+      #   enable = true;
+      #   # globalConfig = "skip_install_trust";
+
+      #   virtualHosts = {
+      #     "${cfg.domain}".extraConfig = ''
+      #       reverse_proxy jellyfin.${cfg.domain} :8096
+      #       reverse_proxy sonarr.${cfg.domain} :8989
+      #       reverse_proxy radarr.${cfg.domain} :7878
+      #       reverse_proxy prowlarr.${cfg.domain} :9696
+      #       reverse_proxy lidarr.${cfg.domain} :8686
+      #       # tls internal
+      #     '';
+      #   };
+      # };
       jellyfin = {
         enable = true;
         openFirewall = true;
         user = "el";
       };
-
-      radarr = {
-        enable = true;
-        openFirewall = true;
-        user = "el";
-      };
-
-      sonarr = {
-        enable = true;
-        openFirewall = true;
-        user = "el";
-      };
-
       lidarr = {
         enable = true;
         openFirewall = true;
         user = "el";
       };
-
       prowlarr = {
         enable = true;
         openFirewall = true;
       };
-
-      traefik = {
+      radarr = {
         enable = true;
-        staticConfigOptions = {
-          entryPoints = {
-            web = {
-              address = ":80";
-              asDefault = true;
-              http.redirections.entrypoint = {
-                to = "websecure";
-                scheme = "https";
-              };
-            };
-            websecure = {
-              address = ":443";
-              asDefault = true;
-              http.tls.certResolver = "letsencrypt";
-            };
-            log = {
-              level = "INFO";
-              filePath = "${config.services.traefik.dataDir}/traefik.log";
-              format = "json";
-            };
-
-            certificatesResolvers.letsencrypt.acme = {
-              email = "postmaster@inanna.internal";
-              storage = "${config.services.traefik.dataDir}/acme.json";
-              httpChallenge.entryPoint = "web";
-            };
-
-            api.dashboard = true;
-            # Access the Traefik dashboard on <Traefik IP>:8080 of your server
-            # api.insecure = true;
-          };
-        };
-
-        dynamicConfigOptions = {
-          routers = {
-            jellyfin = {
-              entryPoints = [ "websecure" ];
-              rule = "Host(`jellyfin.${cfg.domain}`)";
-              service = "jellyfin";
-            };
-            sonarr = {
-              entryPoints = [ "websecure" ];
-              rule = "Host(`sonarr.${cfg.domain}`)";
-              service = "sonarr";
-            };
-            radarr = {
-              entryPoints = [ "websecure" ];
-              rule = "Host(`radarr.${cfg.domain}`)";
-              service = "radarr";
-            };
-            prowlarr = {
-              entryPoints = [ "websecure" ];
-              rule = "Host(`prowlarr.${cfg.domain}`)";
-              service = "prowlarr";
-            };
-          };
-          services = {
-            jellyfin = {
-              loadBalancer = {
-                servers = [
-                  { url = "http://jellyfin:8096"; }
-                ];
-              };
-            };
-            sonarr = {
-              loadBalancer = {
-                servers = [
-                  { url = "http://sonarr:8989"; }
-                ];
-              };
-            };
-            radarr = {
-              loadBalancer = {
-                servers = [
-                  { url = "http://radarr:7878"; }
-                ];
-              };
-            };
-            prowlarr = {
-              loadBalancer = {
-                servers = [
-                  { url = "http://prowlarr:9696"; }
-                ];
-              };
-            };
-          };
-        };
+        openFirewall = true;
+        user = "el";
       };
+      sonarr = {
+        enable = true;
+        openFirewall = true;
+        user = "el";
+      };
+      # keep-sorted end
     };
   };
 }
