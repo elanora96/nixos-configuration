@@ -4,6 +4,9 @@
   imports = [
     ./hardware-configuration.nix
     ./packages.nix
+    ./programs.nix
+    ./networking.nix
+    ./audio.nix
 
     # Hardware modules
     ../../hardware/cpu-amd-r7-3700x
@@ -28,55 +31,6 @@
 
   environment.pathsToLink = [ "/share/zsh" ];
 
-  networking = {
-    hostName = "inanna";
-    networkmanager.enable = true;
-
-    firewall = {
-      allowedTCPPorts = [
-        8000
-        8080
-        3030
-        7470
-      ];
-      allowedUDPPortRanges = [
-        {
-          from = 8000;
-          to = 8100;
-        }
-      ];
-    };
-
-    resolvconf = {
-      enable = true;
-      extraConfig = ''
-        dynamic_order='tap[0-9]* tun[0-9]* vpn* vpn[0-9]* wg* wg[0-9]* ppp[0-9]* ippp[0-9]*'
-      '';
-    };
-  };
-
-  services = {
-    mullvad-vpn = {
-      enable = true;
-      package = pkgs.mullvad-vpn;
-    };
-
-    resolved.enable = true;
-
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      jack.enable = true;
-      wireplumber.enable = true;
-
-      # extraConfig.pipewire."92-low-latency" = {
-      #   "context.properties" = {
-      #     "default.clock.rate" = 48000;
-      #   };
-      # };
-    };
-  };
-
   users = {
     defaultUserShell = pkgs.zsh;
 
@@ -89,55 +43,10 @@
     };
   };
 
-  programs = {
-    appimage = {
-      enable = true;
-      binfmt = true;
-    };
-
-    git = {
-      enable = true;
-      config = {
-        init.defaultBranch = "main";
-      };
-    };
-
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
-      withNodeJs = true;
-      withPython3 = true;
-      withRuby = true;
-    };
-
-    steam = {
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-      localNetworkGameTransfers.openFirewall = true;
-    };
-
-    zsh = {
-      enable = true;
-      autosuggestions.enable = true;
-      enableCompletion = true;
-      syntaxHighlighting.enable = true;
-    };
-  };
-
   homelab = {
     enable = true;
-    domain = "inanna.internal";
+    domain = "internal.elanora.lol";
     storage = "/mnt/media";
-    # traefik = {
-    #   enable = true;
-    #   docker.enable = true;
-    #   services.cache = {
-    #     port = 5000;
-    #   };
-    # };
   };
 
   time.timeZone = "America/Los_Angeles";
