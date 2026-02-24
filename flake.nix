@@ -1,5 +1,5 @@
 {
-  description = "Flake based nixos config(s)";
+  description = "elanora96's flake based nixos config(s)";
 
   inputs = {
     # (Unstable) Nix Packages collection
@@ -34,84 +34,110 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # aarch64 and x86_64 for linux and darwin
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
     inputs:
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" ];
-      imports = [
-        inputs.treefmt-nix.flakeModule
-        inputs.home-manager.flakeModules.home-manager
-      ];
-      perSystem = _: {
-        debug = true;
-        treefmt = {
-          projectRootFile = "flake.nix";
-          programs = {
-            deadnix.enable = true;
-            mdformat.enable = true;
-            nixfmt.enable = true;
-            statix.enable = true;
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      { withSystem, ... }:
+      {
+        systems = import inputs.systems;
+        imports = [
+          inputs.treefmt-nix.flakeModule
+          inputs.home-manager.flakeModules.home-manager
+        ];
+        perSystem =
+          { system, ... }:
+          {
+            debug = true;
+            # pkgs config
+            _module.args.pkgs = import inputs.nixpkgs {
+              inherit system;
+              overlays = [ ];
+              config.allowUnfree = true;
+            };
+            treefmt = {
+              projectRootFile = "flake.nix";
+              programs = {
+                deadnix.enable = true;
+                keep-sorted.enable = true;
+                mdformat.enable = true;
+                nixfmt.enable = true;
+                statix.enable = true;
+              };
+            };
           };
-        };
-      };
-      flake =
-        _:
-        let
-          nixosModules = {
-            # Enables unfree packages, nix command, and flakes
-            common-nix = ./nixos/modules/common-nix.nix;
-            # Just kde
-            graphical = ./nixos/modules/graphical.nix;
-            # Selfhosting things
-            homelab = ./nixos/modules/homelab.nix;
-            # Networking
-            openssh = ./nixos/modules/openssh.nix;
-            printing = ./nixos/modules/printing.nix;
-            tailscale = ./nixos/modules/tailscale.nix;
-            # Slop
-            llm = ./nixos/modules/llm.nix;
-            # Home-Manager
-            hm = inputs.home-manager.nixosModules.home-manager;
-            # Host inanna specific
-            inanna-modules = {
-              system-module = ./nixos/hosts/inanna;
-              hm-cfg = {
-                home-manager = {
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
-                  users.el = import ./home-manager/hosts/inanna.nix;
+        flake =
+          _:
+          let
+            nixosModules = {
+              # keep-sorted start block=yes
+              # Enables nix command, and flakes
+              common-nix = ./nixos/modules/common-nix.nix;
+              # Selfhosting things
+              homelab = ./nixos/modules/homelab.nix;
+              # Host inanna specific
+              inanna-modules = {
+                package-cfg =
+                  { config, ... }:
+                  {
+                    # Use the configured pkgs from perSystem
+                    nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system (
+                      { pkgs, ... }: # perSystem module arguments
+                      pkgs
+                    );
+                  };
+                system-module = ./nixos/hosts/inanna;
+                hm-cfg = {
+                  home-manager = {
+                    useGlobalPkgs = true;
+                    useUserPackages = true;
+                    users.el = import ./home-manager/hosts/inanna.nix;
+                  };
                 };
+                # Just kde
+                kde = ./nixos/modules/kde.nix;
+                # Slop
+                llm = ./nixos/modules/llm.nix;
+                # Networking
+                openssh = ./nixos/modules/openssh.nix;
+                printing = ./nixos/modules/printing.nix;
+                tailscale = ./nixos/modules/tailscale.nix;
               };
+              # keep-sorted end
+            };
+          in
+          {
+            nixosConfigurations = {
+              # keep-sorted start block=yes
+              # My primary desktop system
+              inanna = inputs.nixpkgs.lib.nixosSystem {
+                specialArgs = {
+                  inherit inputs;
+                };
+                modules = with nixosModules; [
+                  # keep-sorted start
+                  common-nix
+                  homelab
+                  inanna-modules.hm-cfg
+                  inanna-modules.package-cfg
+                  inanna-modules.system-module
+                  inputs.home-manager.nixosModules.home-manager
+                  inputs.sops-nix.nixosModules.sops
+                  kde
+                  llm
+                  openssh
+                  printing
+                  tailscale
+                  # keep-sorted end
+                ];
+              };
+              # keep-sorted end
             };
           };
-        in
-        {
-
-          nixosConfigurations = {
-            # My primary desktop system
-            inanna = inputs.nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-              specialArgs = {
-                inherit inputs;
-              };
-              modules = with nixosModules; [
-                common-nix
-                graphical
-                homelab
-                openssh
-                printing
-                tailscale
-                llm
-                hm
-                inanna-modules.system-module
-                inanna-modules.hm-cfg
-                inputs.sops-nix.nixosModules.sops
-              ];
-            };
-          };
-
-        };
-    };
+      }
+    );
 }
