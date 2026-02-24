@@ -32,9 +32,10 @@
   };
 
   fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/8c8313cf-5ee9-4791-98fd-d3abe62ce120";
+    device = "/dev/disk/by-uuid/706c6f68-70fe-49dc-adaf-0e4617a1c7cc";
     fsType = "btrfs";
-    options = [ "subvol=@nix" ];
+    neededForBoot = true;
+    options = [ "noatime" ];
   };
 
   fileSystems."/home" = {
