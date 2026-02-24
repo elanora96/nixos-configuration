@@ -98,15 +98,15 @@
                     users.el = import ./home-manager/hosts/inanna.nix;
                   };
                 };
-                # Just kde
-                kde = ./nixos/modules/kde.nix;
-                # Slop
-                llm = ./nixos/modules/llm.nix;
-                # Networking
-                openssh = ./nixos/modules/openssh.nix;
-                printing = ./nixos/modules/printing.nix;
-                tailscale = ./nixos/modules/tailscale.nix;
               };
+              # Just kde
+              kde = ./nixos/modules/kde.nix;
+              # Slop
+              llm = ./nixos/modules/llm.nix;
+              # Networking
+              openssh = ./nixos/modules/openssh.nix;
+              printing = ./nixos/modules/printing.nix;
+              tailscale = ./nixos/modules/tailscale.nix;
               # keep-sorted end
             };
           in
