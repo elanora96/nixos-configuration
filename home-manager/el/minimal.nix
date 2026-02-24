@@ -8,16 +8,22 @@
     homeDirectory = "/home/el";
 
     packages = with pkgs; [
+      # keep-sorted start
       chezmoi
+      dust
       jellyfin-ffmpeg
       nil
+      nix-tree
       nixd
-      nixfmt-rfc-style
+      nixfmt
       qrcp
+      # keep-sorted end
     ];
   };
 
   programs = {
+    # keep-sorted start block=yes
+
     bottom.enable = true;
     delta = {
       enable = true;
@@ -26,41 +32,29 @@
     fastfetch.enable = true;
     fd.enable = true;
     gh.enable = true;
-
     git = {
       enable = true;
       settings.user.name = "Elanora Manson";
       settings.user.email = "git@elanora.lol";
     };
-
     jq.enable = true;
     lazygit.enable = true;
     lsd.enable = true;
-
     neovim = {
       defaultEditor = true;
       enable = true;
       withNodeJs = true;
       withPython3 = true;
     };
-
     nix-index = {
       enable = true;
       enableZshIntegration = true;
     };
-
     nix-your-shell = {
       enable = true;
       enableZshIntegration = true;
     };
-
     pandoc.enable = true;
-
-    ssh = {
-      enable = true;
-      enableDefaultConfig = true;
-    };
-
     sheldon = {
       enable = true;
       enableZshIntegration = true;
@@ -83,7 +77,22 @@
       #     {% endfor %}{{ hooks | get: "post" | nl }}'';
       # };
     };
-
+    ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      matchBlocks."*" = {
+        forwardAgent = false;
+        addKeysToAgent = "no";
+        compression = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
+      };
+    };
     starship = {
       enable = true;
       enableZshIntegration = true;
@@ -91,9 +100,7 @@
         add_newline = false;
       };
     };
-
     tealdeer.enable = true;
-
     zellij = {
       enable = true;
       enableZshIntegration = true;
@@ -101,12 +108,12 @@
         theme = "gruvbox-dark";
       };
     };
-
     zsh = {
       autosuggestion.enable = true;
       enable = true;
       enableCompletion = true;
       syntaxHighlighting.enable = true;
     };
+    # keep-sorted end
   };
 }
