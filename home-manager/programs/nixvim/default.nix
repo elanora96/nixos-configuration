@@ -13,7 +13,7 @@
     vimAlias = true;
 
     luaLoader.enable = true;
-    extraConfigLua = '''';
+    extraConfigLua = "";
 
     plugins = { };
   };
