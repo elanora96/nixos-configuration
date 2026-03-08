@@ -7,6 +7,7 @@
     bottom
     dust
     fd
+    just
     lsd
     nixfmt
     ripgrep

@@ -6,6 +6,7 @@
   home = {
     packages = with pkgs; [
       # keep-sorted start
+      audacious
       hunspell
       hunspellDicts.en_US
       kdePackages.filelight
