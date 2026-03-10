@@ -77,26 +77,15 @@
               # keep-sorted start block=yes
               # Enables nix command, and flakes
               common-nix = ./nixos/modules/common-nix.nix;
+              # home-manager
+              home-manager = ./nixos/modules/home-manager.nix;
               # Selfhosting things
               homelab = ./nixos/modules/homelab.nix;
               # Host inanna specific
               inanna-modules = {
-                package-cfg =
-                  { config, ... }:
-                  {
-                    # Use the configured pkgs from perSystem
-                    nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system (
-                      { pkgs, ... }: # perSystem module arguments
-                      pkgs
-                    );
-                  };
                 system-module = ./nixos/hosts/inanna;
                 hm-cfg = {
-                  home-manager = {
-                    useGlobalPkgs = true;
-                    useUserPackages = true;
-                    users.el = import ./home-manager/hosts/inanna.nix;
-                  };
+                  home-manager.users.el = import ./home-manager/hosts/inanna.nix;
                 };
               };
               # Just kde
@@ -105,6 +94,16 @@
               llm = ./nixos/modules/llm.nix;
               # Networking
               openssh = ./nixos/modules/openssh.nix;
+              # Use with System to config pkgs
+              package-cfg =
+                { config, ... }:
+                {
+                  # Use the configured pkgs from perSystem
+                  nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system (
+                    { pkgs, ... }: # perSystem module arguments
+                    pkgs
+                  );
+                };
               printing = ./nixos/modules/printing.nix;
               tailscale = ./nixos/modules/tailscale.nix;
               # keep-sorted end
@@ -120,16 +119,15 @@
                 };
                 modules = with nixosModules; [
                   # keep-sorted start
+                  (home-manager // inanna-modules.hm-cfg)
                   common-nix
                   homelab
-                  inanna-modules.hm-cfg
-                  inanna-modules.package-cfg
                   inanna-modules.system-module
-                  inputs.home-manager.nixosModules.home-manager
                   inputs.sops-nix.nixosModules.sops
                   kde
                   llm
                   openssh
+                  package-cfg
                   printing
                   tailscale
                   # keep-sorted end
