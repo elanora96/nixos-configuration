@@ -1,6 +1,10 @@
-_: {
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+{ lib, ... }:
+{
+  nix.settings = {
+    max-jobs = lib.mkDefault "auto";
+    experimental-features = lib.mkDefault [
+      "nix-command"
+      "flakes"
+    ];
+  };
 }
