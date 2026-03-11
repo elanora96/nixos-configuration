@@ -21,7 +21,11 @@
     };
 
     # nixvim - Configure Neovim with Nix!
-    nixvim.url = "github:nix-community/nixvim";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
 
     # treefmt for nix
     treefmt-nix = {
@@ -73,14 +77,8 @@
         flake =
           _:
           let
-            nixosModules = {
+            nixosModules = ./nixos/modules // {
               # keep-sorted start block=yes
-              # Enables nix command, and flakes
-              common-nix = ./nixos/modules/common-nix.nix;
-              # home-manager
-              home-manager = ./nixos/modules/home-manager.nix;
-              # Selfhosting things
-              homelab = ./nixos/modules/homelab.nix;
               # Host inanna specific
               inanna-modules = {
                 system-module = ./nixos/hosts/inanna;
@@ -88,12 +86,6 @@
                   home-manager.users.el = import ./home-manager/hosts/inanna.nix;
                 };
               };
-              # Just kde
-              kde = ./nixos/modules/kde.nix;
-              # Slop
-              llm = ./nixos/modules/llm.nix;
-              # Networking
-              openssh = ./nixos/modules/openssh.nix;
               # Use with System to config pkgs
               package-cfg =
                 { config, ... }:
@@ -104,8 +96,6 @@
                     pkgs
                   );
                 };
-              printing = ./nixos/modules/printing.nix;
-              tailscale = ./nixos/modules/tailscale.nix;
               # keep-sorted end
             };
           in
