@@ -13,7 +13,7 @@
       kdePackages.partitionmanager
       libreoffice-qt6-fresh
       meslo-lgs-nf
-      signal-desktop-bin
+      signal-desktop
       tauon
       thunderbird
       vscodium
