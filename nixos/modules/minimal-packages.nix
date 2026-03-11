@@ -9,6 +9,7 @@
     fd
     just
     lsd
+    nixd
     nixfmt
     ripgrep
     wget
