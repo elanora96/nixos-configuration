@@ -1,20 +1,9 @@
 {
-  self,
   inputs,
   lib,
   ...
 }:
-{
-  imports = [
-    inputs.home-manager.nixosModules.home-manager
-    {
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      sharedModules = [
-        self.home-modules.common
-      ];
-    }
-  ];
+let
   home-modules = {
     common =
       { config, pkgs, ... }:
@@ -32,4 +21,17 @@
         ];
       };
   };
+in
+{
+  imports = [
+    inputs.home-manager.nixosModules.home-manager
+    {
+      home-manager.useGlobalPkgs = true;
+      home-manager.useUserPackages = true;
+      home-manager.backupFileExtension = "hm-bak";
+      home-manager.sharedModules = [
+        home-modules.common
+      ];
+    }
+  ];
 }

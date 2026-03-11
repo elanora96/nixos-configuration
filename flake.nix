@@ -75,9 +75,13 @@
             };
           };
         flake =
-          _:
+          { lib, ... }:
           let
-            nixosModules = ./nixos/modules // {
+            nixosModulesFolder = lib.genAttrs (map (lib.removeSuffix ".nix") (
+              builtins.attrNames (builtins.readDir ./nixos/modules)
+            )) (name: ./nixos/modules + "/${name}.nix");
+
+            nixosModules = nixosModulesFolder // {
               # keep-sorted start block=yes
               # Host inanna specific
               inanna-modules = {
@@ -109,9 +113,10 @@
                 };
                 modules = with nixosModules; [
                   # keep-sorted start
-                  (home-manager // inanna-modules.hm-cfg)
                   common-nix
+                  home-manager
                   homelab
+                  inanna-modules.hm-cfg
                   inanna-modules.system-module
                   inputs.sops-nix.nixosModules.sops
                   kde
