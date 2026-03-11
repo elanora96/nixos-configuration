@@ -77,17 +77,22 @@
         flake =
           { lib, ... }:
           let
-            nixosModulesFolder = lib.genAttrs (map (lib.removeSuffix ".nix") (
-              builtins.attrNames (builtins.readDir ./nixos/modules)
-            )) (name: ./nixos/modules + "/${name}.nix");
+            readDirAttrs =
+              { dir }:
+              # TODO: Check if there is function that does this better
+              # Remove file ext for key, add it back for value
+              lib.genAttrs (map (lib.removeSuffix ".nix")
+                # Get filenames in dir
+                (builtins.attrNames (builtins.readDir dir))
+              ) (name: dir + "/${name}.nix");
 
-            nixosModules = nixosModulesFolder // {
+            nixosModules = {
               # keep-sorted start block=yes
               # Host inanna specific
-              inanna-modules = {
-                system-module = ./nixos/hosts/inanna;
-                hm-cfg = {
-                  home-manager.users.el = import ./home-manager/hosts/inanna.nix;
+              hosts = {
+                inanna = {
+                  system = ./nixos/hosts/inanna;
+                  home.home-manager.users.el = import ./home-manager/hosts/inanna.nix;
                 };
               };
               # Use with System to config pkgs
@@ -101,7 +106,8 @@
                   );
                 };
               # keep-sorted end
-            };
+            }
+            // readDirAttrs ./nixos/modules;
           in
           {
             nixosConfigurations = {
@@ -116,8 +122,8 @@
                   common-nix
                   home-manager
                   homelab
-                  inanna-modules.hm-cfg
-                  inanna-modules.system-module
+                  hosts.inanna.home
+                  hosts.inanna.system
                   inputs.sops-nix.nixosModules.sops
                   kde
                   llm
