@@ -75,9 +75,9 @@
             };
           };
         flake =
-          { lib, ... }:
+          _:
           let
-            inherit (import ./lib/util.nix { inherit lib; }) readDirAttrs;
+            inherit (import ./lib/util.nix { inherit (inputs.nixpkgs) lib; }) readDirAttrs;
             nixosModules = {
               # keep-sorted start block=yes
               # Host inanna specific
