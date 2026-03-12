@@ -1,4 +1,4 @@
-util:
+_util:
 
 { lib, ... }:
 {
@@ -7,10 +7,11 @@ util:
   */
   readDirAttrs =
     dir:
-    # TODO: Check if there is function that does this better
-    # Remove file ext for key, add it back for value
-    lib.genAttrs (map (lib.removeSuffix ".nix")
-      # Get filenames in dir
-      (builtins.attrNames (builtins.readDir dir))
-    ) (name: dir + "/${name}.nix");
+    lib.listToAttrs (
+      map
+        # Remove file ext for name, add dir to value
+        (fileName: lib.nameValuePair (lib.removeSuffix ".nix" fileName) (dir + "/${fileName}"))
+        # Get filenames in dir
+        (builtins.attrNames (builtins.readDir dir))
+    );
 }
