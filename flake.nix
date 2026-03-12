@@ -77,15 +77,7 @@
         flake =
           { lib, ... }:
           let
-            readDirAttrs =
-              { dir }:
-              # TODO: Check if there is function that does this better
-              # Remove file ext for key, add it back for value
-              lib.genAttrs (map (lib.removeSuffix ".nix")
-                # Get filenames in dir
-                (builtins.attrNames (builtins.readDir dir))
-              ) (name: dir + "/${name}.nix");
-
+            inherit (import ./lib/util.nix { inherit lib; }) readDirAttrs;
             nixosModules = {
               # keep-sorted start block=yes
               # Host inanna specific
