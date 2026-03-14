@@ -4,7 +4,7 @@
     ollama = {
       enable = true;
       package = pkgs.ollama-cuda;
-      loadModels = [ "ertghiu256/qwen3-4b-code-reasoning" ];
+      loadModels = [ "qwen3.5:9b" ];
       openFirewall = true;
     };
 
