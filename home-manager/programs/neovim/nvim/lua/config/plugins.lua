@@ -1,17 +1,13 @@
----@diagnostic disable: undefined-global
 return {
   {
     "stevearc/oil.nvim",
     opts = {
-      -- See :help oil-actions for a list of all available actions
       view_options = {
-        -- Show files and directories that start with "."
         show_hidden = true,
       },
       watch_for_changes = true,
     },
     dependencies = { { "echasnovski/mini.icons", opts = {} } }
-    -- dependencies = { "nvim-tree/nvim-web-devicons" }
   },
   {
     "wincent/command-t",
@@ -38,7 +34,6 @@ return {
         sync_install = false,
         highlight = { enable = true },
         indent = { enable = true },
-
       })
     end
   },
@@ -61,13 +56,21 @@ return {
       end)
 
       require("lazy-lsp").setup {
+        use_vim_lsp_config = true,
         excluded_servers = {
-          -- "als",         -- Deprecation warning
-          "ruff_lsp",
           "bufls",
-          -- "bazelrc-lsp", -- Errors
-          -- "tsserver"     -- Deprecation warning
         },
+        configs = {
+          lua_ls = {
+            settings = {
+              Lua = {
+                diagnostics = {
+                  -- Get the language server to recognize the `vim` global
+                  globals = { "vim" },
+                },
+              },
+            },
+          }, }
       }
     end,
   },
@@ -78,29 +81,6 @@ return {
     build = function() vim.fn["mkdp#util#install"]() end,
   },
   {
-    "Olical/conjure",
-    ft = { "clojure" },
-    lazy = true,
-    init = function()
-      vim.g["conjure#debug"] = true
-    end,
-
-    dependencies = { "PaterJason/cmp-conjure" },
-  },
-  {
-    "PaterJason/cmp-conjure",
-    lazy = true,
-    config = function()
-      local cmp = require("cmp")
-      local config = cmp.get_config()
-      table.insert(config.sources, { name = "conjure" })
-      return cmp.setup(config)
-    end,
-  },
-  {
-    "lambdalisue/vim-suda",
-  },
-  {
     'sainnhe/gruvbox-material',
     lazy = false,
     priority = 1000,
@@ -108,4 +88,44 @@ return {
       vim.g.gruvbox_material_background = "hard"
       vim.g.gruvbox_material_enable_italic = true
     end
-  } }
+  },
+  {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+    config = function()
+      require('lualine').setup { options = {
+        theme = 'gruvbox'
+      } }
+    end
+  },
+  {
+    'akinsho/bufferline.nvim',
+    version = "*",
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function()
+      vim.opt.termguicolors = true
+      vim.opt.mousemoveevent = true
+      require("bufferline").setup { options = {
+        hover = {
+          enabled = true,
+          delay = 200,
+          reveal = { 'close' }
+        }
+      } }
+    end
+  },
+  {
+    'stevearc/conform.nvim',
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        -- Conform will run multiple formatters sequentially
+        python = { "isort", "black" },
+        -- You can customize some of the format options for the filetype (:help conform.format)
+        rust = { "rustfmt", lsp_format = "fallback" },
+        -- Conform will run the first available formatter
+        javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+    },
+  }
+}
