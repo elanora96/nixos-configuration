@@ -31,6 +31,7 @@ in
       home-manager.backupFileExtension = "hm-bak";
       home-manager.sharedModules = [
         home-modules.common
+        inputs.nixvim.homeModules.nixvim
       ];
     }
   ];

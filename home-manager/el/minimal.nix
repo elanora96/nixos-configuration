@@ -1,11 +1,12 @@
 { pkgs, ... }:
 
 {
-  imports = [ ../. ];
+  imports = [
+    ../.
+  ];
 
   home = {
     username = "el";
-    homeDirectory = "/home/el";
 
     packages = with pkgs; [
       # keep-sorted start
@@ -23,7 +24,6 @@
 
   programs = {
     # keep-sorted start block=yes
-
     bottom.enable = true;
     delta = {
       enable = true;
@@ -40,12 +40,6 @@
     jq.enable = true;
     lazygit.enable = true;
     lsd.enable = true;
-    neovim = {
-      defaultEditor = true;
-      enable = true;
-      withNodeJs = true;
-      withPython3 = true;
-    };
     nix-index = {
       enable = true;
       enableZshIntegration = true;
@@ -54,28 +48,22 @@
       enable = true;
       enableZshIntegration = true;
     };
+    nixvim = {
+      enable = true;
+      imports = [ ../programs/nixvim ];
+    };
     pandoc.enable = true;
     sheldon = {
       enable = true;
       enableZshIntegration = true;
-      # plugins = {
-      #   elanora96-zsh-plugins = {
-      #     github = "elanora96/zsh-plugins";
-      #   };
-      #   zsh-syntax-highlighting = {
-      #     github = "zsh-users/zsh-syntax-highlighting";
-      #     apply = [ "defer" ];
-      #   };
-      #   zsh-autosuggestions = {
-      #     github = "zsh-users/zsh-autosuggestions";
-      #     apply = [ "defer" ];
-      #   };
-      # };
-      # templates = {
-      #   defer = ''
-      #     {{ hooks | get: "pre" | nl }}{% for file in files %}zsh-defer source "{{ file }}"
-      #     {% endfor %}{{ hooks | get: "post" | nl }}'';
-      # };
+      settings = {
+        shell = "zsh";
+        plugins = {
+          elanora96-zsh-plugins = {
+            github = "elanora96/zsh-plugins";
+          };
+        };
+      };
     };
     ssh = {
       enable = true;
