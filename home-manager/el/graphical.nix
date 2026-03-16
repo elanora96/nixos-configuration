@@ -7,6 +7,7 @@
     packages = with pkgs; [
       # keep-sorted start
       audacious
+      equibop
       hunspell
       hunspellDicts.en_US
       kdePackages.filelight
