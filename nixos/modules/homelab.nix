@@ -7,6 +7,8 @@
 
 let
   cfg = config.homelab;
+
+  # mkCaddyRule = subdomain: service: "reverse_proxy ${subdomain}.${cfg.domain} :${service.port}";
 in
 {
   options.homelab = {
@@ -41,19 +43,15 @@ in
 
     services = {
       # keep-sorted start block=yes
-
       # caddy = {
       #   enable = true;
-      #   # globalConfig = "skip_install_trust";
-
       #   virtualHosts = {
       #     "${cfg.domain}".extraConfig = ''
-      #       reverse_proxy jellyfin.${cfg.domain} :8096
-      #       reverse_proxy sonarr.${cfg.domain} :8989
-      #       reverse_proxy radarr.${cfg.domain} :7878
-      #       reverse_proxy prowlarr.${cfg.domain} :9696
-      #       reverse_proxy lidarr.${cfg.domain} :8686
-      #       # tls internal
+      #       ${mkCaddyRule "jellyfin" config.services.jellyfin}
+      #       ${mkCaddyRule "sonarr" config.services.sonarr}
+      #       ${mkCaddyRule "radarr" config.services.radarr}
+      #       ${mkCaddyRule "prowlarr" config.services.prowlarr}
+      #       ${mkCaddyRule "lidarr" config.services.lidarr}
       #     '';
       #   };
       # };
