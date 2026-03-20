@@ -39,8 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # aarch64 and x86_64 for linux and darwin
-    systems.url = "github:nix-systems/default";
+    # Integration of pre-commit git hooks with Nix
+    git-hooks-nix = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -48,13 +51,23 @@
     inputs.flake-parts.lib.mkFlake { inherit inputs; } (
       { withSystem, ... }:
       {
-        systems = import inputs.systems;
+        systems = [
+          "aarch64-darwin"
+          "aarch64-linux"
+          "x86_64-linux"
+        ];
         imports = [
-          inputs.treefmt-nix.flakeModule
+          inputs.git-hooks-nix.flakeModule
           inputs.home-manager.flakeModules.home-manager
+          inputs.treefmt-nix.flakeModule
         ];
         perSystem =
-          { system, ... }:
+          {
+            config,
+            pkgs,
+            system,
+            ...
+          }:
           {
             debug = true;
             # pkgs config
@@ -63,21 +76,38 @@
               overlays = [ ];
               config.allowUnfree = true;
             };
+            pre-commit = {
+              check.enable = true;
+              settings.hooks = {
+                treefmt.enable = true;
+              };
+            };
             treefmt = {
               projectRootFile = "flake.nix";
               programs = {
                 deadnix.enable = true;
+                just.enable = true;
                 keep-sorted.enable = true;
                 mdformat.enable = true;
                 nixfmt.enable = true;
                 statix.enable = true;
               };
             };
+            devShells.default = pkgs.mkShell {
+              name = "nixos-configurations-shell";
+              inputsFrom = [
+                config.treefmt.build.devShell
+                config.pre-commit.devShell
+              ];
+              packages = [
+                pkgs.just
+              ];
+            };
           };
         flake =
-          _:
           let
             inherit (import ./lib/util.nix { inherit (inputs.nixpkgs) lib; }) readDirAttrs;
+
             nixosModules = {
               # keep-sorted start block=yes
               # Host inanna specific
@@ -87,8 +117,7 @@
                   home.home-manager.users.el = import ./home-manager/hosts/inanna.nix;
                 };
               };
-              # Use with System to config pkgs
-              package-cfg =
+              withSystem-pkg-cfg =
                 { config, ... }:
                 {
                   # Use the configured pkgs from perSystem
@@ -120,9 +149,9 @@
                   kde
                   llm
                   openssh
-                  package-cfg
                   printing
                   tailscale
+                  withSystem-pkg-cfg
                   # keep-sorted end
                 ];
               };
