@@ -1,5 +1,4 @@
-_:
-{
+_: {
   defaultEditor = true;
   viAlias = true;
   vimAlias = true;
@@ -58,6 +57,7 @@ _:
     };
     web-devicons.enable = true;
     which-key.enable = true;
+    zellij-nav.enable = true;
     # keep-sorted end
 
     # Dev
@@ -91,6 +91,36 @@ _:
     {
       action = "<cmd>LazyGit<CR>";
       key = "<leader>gg";
+      options.desc = "Open lazygit within nvim.";
+    }
+    # Zellij
+    {
+      action = "<cmd>ZellijNavigateLeftTab<CR>";
+      key = "<c-h>";
+      options.desc = "Navigate left or tab";
+    }
+    {
+      action = "<cmd>ZellijNavigateDown<CR>";
+      key = "<c-j>";
+      options.desc = "Navigate down";
+    }
+    {
+      action = "<cmd>ZellijNavigateUp<CR>";
+      key = "<c-k>";
+      options.desc = "Navigate up";
+    }
+    {
+      action = "<cmd>ZellijNavigateRightTab<CR>";
+      key = "<c-l>";
+      options.desc = "Navigate right or tab";
+    }
+  ];
+  autoCmd = [
+    {
+      command = "silent !zellij action switch-mode normal";
+      event = [ "VimLeave" ];
+      pattern = "*";
+      desc = "Ensures that when exiting NeoVim, Zellij returns to normal mode";
     }
   ];
 }
