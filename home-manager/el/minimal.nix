@@ -36,6 +36,7 @@
       enable = true;
       settings.user.name = "Elanora Manson";
       settings.user.email = "git@elanora.lol";
+      signing.format = "openpgp";
     };
     jq.enable = true;
     lazygit.enable = true;
