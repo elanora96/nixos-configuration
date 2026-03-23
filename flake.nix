@@ -165,6 +165,7 @@
                 modules = with nixosModules; [
                   # keep-sorted start
                   common-nix
+                  home-assistant
                   home-manager
                   homelab
                   hosts.inanna.home
