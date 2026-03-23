@@ -68,6 +68,16 @@
             system,
             ...
           }:
+          let
+            hm-users = {
+              el = {
+                graphical = ./home-manager/el/graphical.nix;
+                minimal = ./home-manager/el/minimal.nix;
+              };
+            };
+
+            extraSpecialArgs = { inherit inputs; };
+          in
           {
             debug = true;
             # pkgs config
@@ -75,6 +85,20 @@
               inherit system;
               overlays = [ ];
               config.allowUnfree = true;
+            };
+            legacyPackages.homeConfigurations = {
+              el-minimal = inputs.home-manager.lib.homeManagerConfiguration {
+                inherit pkgs extraSpecialArgs;
+                modules = [
+                  hm-users.el.minimal
+                ];
+              };
+              el-graphical = inputs.home-manager.lib.homeManagerConfiguration {
+                inherit pkgs extraSpecialArgs;
+                modules = [
+                  hm-users.el.graphical
+                ];
+              };
             };
             pre-commit = {
               check.enable = true;
@@ -129,15 +153,15 @@
               # keep-sorted end
             }
             // readDirAttrs ./nixos/modules;
+
+            specialArgs = { inherit inputs; };
           in
           {
             nixosConfigurations = {
               # keep-sorted start block=yes
               # My primary desktop system
               inanna = inputs.nixpkgs.lib.nixosSystem {
-                specialArgs = {
-                  inherit inputs;
-                };
+                inherit specialArgs;
                 modules = with nixosModules; [
                   # keep-sorted start
                   common-nix
