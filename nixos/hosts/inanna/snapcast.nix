@@ -1,10 +1,19 @@
 { pkgs, ... }:
 {
   services = {
+    avahi = {
+      enable = true;
+      openFirewall = true;
+      reflector = true;
+      publish = {
+        enable = true;
+        userServices = true;
+      };
+    };
     snapserver = {
       enable = true;
       settings = {
-        stream.source = "pipe:///run/snapserver/pipe?name=NAME";
+        stream.source = "pipewire:///run/snapserver/pipe?name=Snapcast";
       };
       openFirewall = true;
     };
@@ -12,7 +21,7 @@
       "pulse.cmd" = [
         {
           cmd = "load-module";
-          args = "module-pipe-sink file=/run/snapserver/pipe sink_name=Snapcast format=s16le rate=48000";
+          args = "module-pipe-sink file=/run/snapserver/pipe sink_name=SnapcastPipe format=s16le rate=48000";
         }
       ];
     };
