@@ -3,8 +3,16 @@
   services = {
     ollama = {
       enable = true;
-      package = pkgs.ollama-cuda;
-      loadModels = [ "qwen3.5:9b" ];
+      package = pkgs.ollama-cuda.override {
+        # Does not compile with cuda library needed for Pascal
+        # https://github.com/NixOS/nixpkgs/issues/421775
+        # nvidia-smi --query-gpu=compute_cap --format=csv
+        cudaArches = [ "61" ];
+      };
+      loadModels = [
+        "qwen3.5:9b"
+        "fredrezones55/qwen3.5-opus:4b"
+      ];
       openFirewall = true;
     };
 
@@ -24,8 +32,4 @@
         };
     };
   };
-
-  environment.systemPackages = with pkgs; [
-    qwen-code
-  ];
 }
