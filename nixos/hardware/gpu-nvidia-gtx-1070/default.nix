@@ -29,7 +29,7 @@
       nvidiaPersistenced = true;
       nvidiaSettings = true;
       # 580.xx finishes support for Pascal
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     };
   };
 
