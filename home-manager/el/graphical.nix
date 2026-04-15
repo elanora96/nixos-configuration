@@ -14,6 +14,7 @@
       kdePackages.partitionmanager
       libreoffice-qt6-fresh
       meslo-lgs-nf
+      mkvtoolnix
       signal-desktop
       tauon
       thunderbird
@@ -29,6 +30,8 @@
     alacritty = {
       enable = true;
       theme = "gruvbox_material";
+      # For sixel support
+      package = pkgs.alacritty-graphics;
     };
     firefox = {
       enable = true;

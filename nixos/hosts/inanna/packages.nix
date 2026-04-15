@@ -4,6 +4,7 @@
 
   environment.systemPackages = with pkgs; [
     # keep-sorted start
+    kdePackages.audiocd-kio
     ntfs2btrfs
     picard
     uv
