@@ -95,6 +95,11 @@
       "metrics" = false;
       "diagnostics" = false;
     };
+    "terminal" = {
+      "shell" = {
+        "program" = "zsh";
+      };
+    };
     "theme" = {
       "mode" = "system";
       "light" = "One Light";
