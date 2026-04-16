@@ -93,7 +93,34 @@
     zellij = {
       enable = true;
       enableZshIntegration = true;
+      exitShellOnExit = true;
       settings = {
+        /**
+          .kdl allows for some Nix Attr breaking patterns
+          Nix -> KDL functions live in home-manager/modules/lib/generators.nix
+          Several keys to note:
+          - _props - Allows for prop attributes
+          - _args - Allows for string arguments
+          - _children - Allows for list of attributes
+        */
+        plugins = {
+          autolock = {
+            _props.location = "https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm";
+            is_enabled = true;
+            # Lock when any open these programs open. They are expected to unlock themselves when closed (e.g., using zellij-nav.nvim plugin).
+            triggers = "nvim|vim|git|lazygit|fzf|yazi|zoxide";
+            # Reaction to input occurs after this many seconds. (default=0.3)
+            # (An existing scheduled reaction prevents additional reactions.)
+            reaction_seconds = "0.3";
+            # Print to Zellij log? (default=false)
+            print_to_log = true;
+          };
+        };
+        # Load "headless" plugins on start.
+        load_plugins = {
+          autolock = { };
+        };
+        show_startup_tips = false;
         theme = "gruvbox-dark";
       };
     };
