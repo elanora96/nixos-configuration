@@ -49,7 +49,10 @@
   outputs =
     inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } (
-      { withSystem, ... }:
+      { withSystem, lib, ... }:
+      let
+        util = import ./lib/util.nix { inherit lib; };
+      in
       {
         systems = [
           "aarch64-darwin"
@@ -69,14 +72,13 @@
             ...
           }:
           let
-            hm-users = {
-              el = {
-                graphical = ./home-manager/el/graphical.nix;
-                minimal = ./home-manager/el/minimal.nix;
-              };
-            };
-
-            extraSpecialArgs = { inherit inputs; };
+            hmUtil = import ./lib/hmUtil.nix { inherit inputs lib pkgs; };
+            userModuleDir = ./home-manager/el;
+            homeConfigurations =
+              let
+                hmCfgs = hmUtil.readHMUserModuleDir userModuleDir;
+              in
+              lib.mapAttrs (_name: value: hmUtil.mkHMCfg value) hmCfgs;
           in
           {
             debug = true;
@@ -86,19 +88,8 @@
               overlays = [ ];
               config.allowUnfree = true;
             };
-            legacyPackages.homeConfigurations = {
-              el-minimal = inputs.home-manager.lib.homeManagerConfiguration {
-                inherit pkgs extraSpecialArgs;
-                modules = [
-                  hm-users.el.minimal
-                ];
-              };
-              el-graphical = inputs.home-manager.lib.homeManagerConfiguration {
-                inherit pkgs extraSpecialArgs;
-                modules = [
-                  hm-users.el.graphical
-                ];
-              };
+            legacyPackages = {
+              inherit homeConfigurations;
             };
             pre-commit = {
               check.enable = true;
@@ -130,8 +121,6 @@
           };
         flake =
           let
-            inherit (import ./lib/util.nix { inherit (inputs.nixpkgs) lib; }) readDirAttrs;
-
             nixosModules = {
               # keep-sorted start block=yes
               # Host inanna specific
@@ -152,7 +141,7 @@
                 };
               # keep-sorted end
             }
-            // readDirAttrs ./nixos/modules;
+            // util.readModuleDir ./nixos/modules;
 
             specialArgs = { inherit inputs; };
           in
