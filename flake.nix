@@ -121,36 +121,38 @@
           };
         flake =
           let
-            nixosModules = {
-              # keep-sorted start block=yes
-              # Host inanna specific
-              hosts = {
-                inanna = {
-                  system = ./nixos/hosts/inanna;
-                  home.home-manager.users.el = import ./home-manager/hosts/inanna.nix;
+            nixosModules =
+              let
+                dir = util.readModuleDir ./nixos/modules;
+              in
+              {
+                inherit (inputs.sops-nix.nixosModules) sops;
+                hosts = {
+                  inanna = {
+                    system = ./nixos/hosts/inanna;
+                    home.home-manager.users.el = import ./home-manager/hosts/inanna.nix;
+                  };
                 };
-              };
-              withSystem-pkg-cfg =
-                { config, ... }:
-                {
-                  # Use the configured pkgs from perSystem
-                  nixpkgs.pkgs = withSystem config.nixpkgs.hostPlatform.system (
-                    { pkgs, ... }: # perSystem module arguments
-                    pkgs
-                  );
-                };
-              # keep-sorted end
-            }
-            // util.readModuleDir ./nixos/modules;
-
-            specialArgs = { inherit inputs; };
+                perSystem-pkgs =
+                  { config, ... }:
+                  let
+                    inherit (config.nixpkgs.hostPlatform) system;
+                  in
+                  {
+                    nixpkgs.pkgs = withSystem system (
+                      { pkgs, ... }: # perSystem module arguments
+                      pkgs
+                    );
+                  };
+              }
+              // dir;
           in
           {
             nixosConfigurations = {
               # keep-sorted start block=yes
               # My primary desktop system
               inanna = inputs.nixpkgs.lib.nixosSystem {
-                inherit specialArgs;
+                specialArgs = { inherit inputs; };
                 modules = with nixosModules; [
                   # keep-sorted start
                   common-nix
@@ -159,13 +161,13 @@
                   homelab
                   hosts.inanna.home
                   hosts.inanna.system
-                  inputs.sops-nix.nixosModules.sops
                   kde
                   llm
                   openssh
+                  perSystem-pkgs
                   printing
+                  sops
                   tailscale
-                  withSystem-pkg-cfg
                   # keep-sorted end
                 ];
               };
