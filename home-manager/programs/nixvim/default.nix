@@ -34,6 +34,7 @@ _: {
         #lsp_doc_border = false;
       };
     };
+    oil.enable = true;
     telescope = {
       enable = true;
       keymaps = {
@@ -92,6 +93,12 @@ _: {
       action = "<cmd>LazyGit<CR>";
       key = "<leader>gg";
       options.desc = "Open lazygit within nvim.";
+    }
+    # Oil.nvim
+    {
+      action = "<cmd>Oil<CR>";
+      key = "<leader>o";
+      options.desc = "Open Oil";
     }
     # Zellij
     {
