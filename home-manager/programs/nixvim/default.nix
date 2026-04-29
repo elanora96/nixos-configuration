@@ -59,6 +59,10 @@ _: {
     web-devicons.enable = true;
     which-key.enable = true;
     zellij-nav.enable = true;
+    zk = {
+      enable = true;
+      settings.picker = "telescope";
+    };
     # keep-sorted end
 
     # Dev
@@ -120,6 +124,17 @@ _: {
       action = "<cmd>ZellijNavigateRightTab<CR>";
       key = "<c-l>";
       options.desc = "Navigate right or tab";
+    }
+    # zk Navigation
+    {
+      action = "<cmd>ZkBacklinks<CR>";
+      key = "<leader>zb";
+      options.desc = "Opens a notes picker showing backlinks of the current buffer";
+    }
+    {
+      action = "<cmd>ZkLinks<CR>";
+      key = "<leader>zl";
+      options.desc = "Opens a notes picker showing outbound links of the current buffer";
     }
   ];
   autoCmd = [

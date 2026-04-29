@@ -130,6 +130,9 @@
         theme = "gruvbox-dark";
       };
     };
+    zk = {
+      enable = true;
+    };
     zsh = {
       autosuggestion.enable = true;
       enable = true;
