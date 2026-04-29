@@ -66,9 +66,10 @@
       settings = {
         shell = "zsh";
         plugins = {
-          elanora96-zsh-plugins = {
-            github = "elanora96/zsh-plugins";
-          };
+          # Need to fix some of these to be more platform agnostic
+          # elanora96-zsh-plugins = {
+          #   github = "elanora96/zsh-plugins";
+          # };
         };
       };
     };
