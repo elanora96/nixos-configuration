@@ -29,6 +29,12 @@
       enable = true;
       enableGitIntegration = true;
     };
+    direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
+    direnv-instant.enable = true;
     fastfetch.enable = true;
     fd.enable = true;
     gh.enable = true;

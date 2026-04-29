@@ -7,7 +7,10 @@
 }:
 
 {
-  imports = [ inputs.nixvim.homeModules.nixvim ];
+  imports = [
+    inputs.direnv-instant.homeModules.direnv-instant
+    inputs.nixvim.homeModules.nixvim
+  ];
 
   home = {
     # Sensible default for `home.homeDirectory`
