@@ -1,6 +1,6 @@
 /**
   Utilities for Home Manager tend to require more inputs than general Nix utils
-  Thus split to a seperate file to make importing general utils easier
+  Thus split to a separate file to make importing general utils easier
 */
 {
   inputs,

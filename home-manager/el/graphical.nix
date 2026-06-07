@@ -68,7 +68,7 @@
             "command" = [ "nixfmt" ];
           };
           "options" = {
-            # If this is ommited; default search path (<nixpkgs>) will be used.
+            # If this is omitted; default search path (<nixpkgs>) will be used.
             "nixos" = {
               "expr" =
                 "(builtins.getFlake \"/home/el/Projects/nixos-configuration\").nixosConfigurations.inanna.options";

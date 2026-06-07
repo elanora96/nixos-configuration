@@ -108,12 +108,16 @@
             treefmt = {
               projectRootFile = "flake.nix";
               programs = {
+                # keep-sorted start block=yes
                 deadnix.enable = true;
                 just.enable = true;
                 keep-sorted.enable = true;
                 mdformat.enable = true;
                 nixfmt.enable = true;
                 statix.enable = true;
+                taplo.enable = true;
+                typos.enable = true;
+                # keep-sorted end
               };
             };
             devShells.default = pkgs.mkShell {
