@@ -14,7 +14,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # My preferred flake framework
+    # Simplify Nix Flakes with the module system
     flake-parts = {
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
@@ -95,6 +95,7 @@
               inherit system;
               overlays = [ ];
               config.allowUnfree = true;
+              config.allowUnfreePredicate = _: true;
             };
             legacyPackages = {
               inherit homeConfigurations;
