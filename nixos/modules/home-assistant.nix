@@ -1,5 +1,6 @@
 { config, ... }:
 let
+  cfg = config.services.home-assistant;
   homekit = {
     TCPPort = 21063;
     UDPPort = 5353;
@@ -8,7 +9,7 @@ in
 {
   networking.firewall = {
     allowedTCPPorts = [
-      config.services.home-assistant.config.http.server_port
+      cfg.config.http.server_port
       homekit.TCPPort
     ];
     allowedUDPPorts = [ homekit.UDPPort ];
