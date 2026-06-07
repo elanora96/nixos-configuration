@@ -7,6 +7,7 @@
     kdePackages.audiocd-kio
     ntfs2btrfs
     picard
+    python3
     uv
     watchman
     waypipe

@@ -12,6 +12,7 @@
       # keep-sorted start
       chezmoi
       dust
+      fzf
       jellyfin-ffmpeg
       nil
       nix-tree
