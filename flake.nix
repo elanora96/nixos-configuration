@@ -177,6 +177,7 @@
                   kde
                   llm
                   openssh
+                  paperless
                   perSystem-pkgs
                   printing
                   sops
