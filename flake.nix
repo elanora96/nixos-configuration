@@ -118,6 +118,7 @@
                 statix.enable = true;
                 taplo.enable = true;
                 typos.enable = true;
+                yamlfmt.enable = true;
                 # keep-sorted end
               };
             };
@@ -139,7 +140,6 @@
                 dir = util.readModuleDir ./nixos/modules;
               in
               {
-                inherit (inputs.sops-nix.nixosModules) sops;
                 hosts = {
                   inanna = {
                     system = ./nixos/hosts/inanna;

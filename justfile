@@ -11,6 +11,11 @@ default:
 update:
     nix flake update
 
+# Get soppy with it
+[group('main')]
+sop:
+    sops ./secrets/secrets.yaml
+
 # Rebuild and switch
 [group('main')]
 switch:
