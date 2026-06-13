@@ -52,6 +52,12 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
+
+    # Declarative media server configuration manager for NixOS
+    nixflix = {
+      url = "github:kiriwalawren/nixflix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -176,6 +182,7 @@
                   hosts.inanna.system
                   kde
                   llm
+                  nixflix
                   openssh
                   paperless
                   perSystem-pkgs

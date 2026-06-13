@@ -43,23 +43,6 @@ in
 
     services = {
       # keep-sorted start block=yes
-      # caddy = {
-      #   enable = true;
-      #   virtualHosts = {
-      #     "${cfg.domain}".extraConfig = ''
-      #       ${mkCaddyRule "jellyfin" config.services.jellyfin}
-      #       ${mkCaddyRule "sonarr" config.services.sonarr}
-      #       ${mkCaddyRule "radarr" config.services.radarr}
-      #       ${mkCaddyRule "prowlarr" config.services.prowlarr}
-      #       ${mkCaddyRule "lidarr" config.services.lidarr}
-      #     '';
-      #   };
-      # };
-      jellyfin = {
-        enable = true;
-        openFirewall = true;
-        user = "el";
-      };
       lidarr = {
         enable = true;
         openFirewall = true;
