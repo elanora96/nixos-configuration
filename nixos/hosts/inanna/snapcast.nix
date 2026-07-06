@@ -13,7 +13,7 @@
     snapserver = {
       enable = true;
       settings = {
-        stream.source = "pipewire:///run/snapserver/pipe?name=Snapcast";
+        stream.source = "pipewire://?name=Snapcast&device=&auto_connect=true";
       };
       openFirewall = true;
     };
@@ -21,7 +21,7 @@
       "pulse.cmd" = [
         {
           cmd = "load-module";
-          args = "module-pipe-sink file=/run/snapserver/pipe sink_name=SnapcastPipe format=s16le rate=48000";
+          args = "module-pipe-sink file=/run/snapserver/pipe sink_name=Snapcast format=s16le rate=48000";
         }
       ];
     };
