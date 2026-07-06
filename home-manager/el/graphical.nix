@@ -90,6 +90,9 @@
         };
       };
     };
+    "project_panel" = {
+      "dock" = "left";
+    };
     "soft_wrap" = "bounded";
     "telemetry" = {
       "metrics" = false;
