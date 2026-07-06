@@ -7,8 +7,6 @@
 
 let
   cfg = config.homelab;
-
-  # mkCaddyRule = subdomain: service: "reverse_proxy ${subdomain}.${cfg.domain} :${service.port}";
 in
 {
   options.homelab = {
@@ -27,19 +25,39 @@ in
       qbittorrent-nox
     ];
 
-    # security.acme = {
-    #   acceptTerms = true;
-    #   defaults = {
-    #     email = "admin@${cfg.domain}";
-    #     webroot = "/var/lib/acme/acme-challenge";
-    #   };
-    #   certs."${cfg.domain}" = {
-    #     inherit (config.services.caddy) group;
-    #     extraDomainNames = [
-    #       "*.internal.${cfg.domain}"
-    #     ];
-    #   };
-    # };
+    networking.firewall.allowedTCPPorts =
+      let
+        acmePlainHTTPChallenge = 80;
+        qbittorrent = 7470;
+      in
+      [
+        acmePlainHTTPChallenge
+        qbittorrent
+      ];
+
+    security.acme = {
+      acceptTerms = true;
+      defaults = {
+        email = "admin@${cfg.domain}";
+        webroot = "/var/lib/acme/acme-challenge";
+      };
+      certs."${cfg.domain}" = {
+        inherit (config.services.nginx) group;
+        extraDomainNames = [
+          "*.${cfg.domain}"
+        ];
+      };
+    };
+
+    services.nginx = {
+      enable = true;
+      virtualHosts.${cfg.domain} = {
+        forceSSL = true;
+        useACMEHost = cfg.domain;
+        acmeRoot = null;
+        locations."/.well-known/".root = "/var/lib/acme/acme-challenge/";
+      };
+    };
 
     services = {
       # keep-sorted start block=yes

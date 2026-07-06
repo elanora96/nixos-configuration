@@ -29,12 +29,9 @@
 
     firewall = {
       allowedTCPPorts = [
-        80
-        443
         8000
         8080
         3030
-        7470
       ];
     };
   };

@@ -24,7 +24,13 @@ in
     inherit mediaDir stateDir;
     enable = true;
 
-    nginx.enable = true;
+    nginx = {
+      inherit (config.homelab) domain;
+      enable = true;
+      addHostsEntries = true;
+      # enableACME = true;
+    };
+
     postgres.enable = true;
 
     theme = {
@@ -38,6 +44,10 @@ in
       users.el = {
         policy.isAdministrator = true;
         password._secret = config.sops.secrets."jellyfin/el_password".path;
+        configuration = {
+          subtitleLanguagePreference = "eng";
+          subtitleMode = "Always";
+        };
       };
       libraries =
         let
