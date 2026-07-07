@@ -187,6 +187,7 @@
                   paperless
                   perSystem-pkgs
                   printing
+                  scx
                   sops
                   tailscale
                   # keep-sorted end
