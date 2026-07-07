@@ -4,11 +4,19 @@
     hostName = "inanna";
     networkmanager.enable = true;
     firewall = {
-      allowedTCPPorts = [
-        8000
-        8080
-        3030
-      ];
+      allowedTCPPorts =
+        let
+          nicotinePlus = 2236;
+          iThinkTheseWereForDevelopment = [
+            3030
+            8000
+            8080
+          ];
+        in
+        [
+          nicotinePlus
+        ]
+        ++ iThinkTheseWereForDevelopment;
     };
   };
 

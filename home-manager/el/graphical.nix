@@ -15,6 +15,8 @@
       libreoffice-qt6-fresh
       meslo-lgs-nf
       mkvtoolnix
+      nicotine-plus
+      orca-slicer
       signal-desktop
       tauon
       thunderbird
@@ -22,7 +24,6 @@
       zed-editor
       # keep-sorted end
     ];
-
   };
 
   programs = {
