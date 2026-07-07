@@ -8,7 +8,6 @@
     ./networking.nix
     ./audio.nix
     ./bluetooth.nix
-    ./snapcast.nix
 
     # Hardware modules
     ../../hardware/cpu-amd-r7-3700x
