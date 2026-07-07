@@ -1,3 +1,5 @@
 # elanora96 nixos-configuration
 
-Stay tuned, at some point this will manage much more than one desktop...
+Don't expect this to be a good learning resource lol
+
+These configs are working for me though
