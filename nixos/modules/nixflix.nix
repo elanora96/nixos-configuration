@@ -27,8 +27,8 @@ in
     nginx = {
       inherit (config.homelab) domain;
       enable = true;
-      addHostsEntries = true;
-      # enableACME = true;
+      enableACME = true;
+      forceSSL = true;
     };
 
     postgres.enable = true;

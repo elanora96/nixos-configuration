@@ -21,6 +21,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      # keep-sorted start block=yes
+      "porkbun/api_key" = { };
+      "porkbun/secret_api_key" = { };
+      # keep-sorted end
+    };
+
     environment.systemPackages = with pkgs; [
       qbittorrent-nox
     ];
@@ -37,25 +44,17 @@ in
 
     security.acme = {
       acceptTerms = true;
-      defaults = {
-        email = "admin@${cfg.domain}";
-        webroot = "/var/lib/acme/acme-challenge";
-      };
+      defaults.email = "admin@${cfg.domain}";
       certs."${cfg.domain}" = {
         inherit (config.services.nginx) group;
         extraDomainNames = [
           "*.${cfg.domain}"
         ];
-      };
-    };
-
-    services.nginx = {
-      enable = true;
-      virtualHosts.${cfg.domain} = {
-        forceSSL = true;
-        useACMEHost = cfg.domain;
-        acmeRoot = null;
-        locations."/.well-known/".root = "/var/lib/acme/acme-challenge/";
+        dnsProvider = "porkbun";
+        environmentFile = "${pkgs.writeText "porkbun-creds" ''
+          PORKBUN_API_KEY_FILE=${config.sops.secrets."porkbun/api_key".path}
+          PORKBUN_SECRET_API_KEY_FILE=${config.sops.secrets."porkbun/secret_api_key".path}
+        ''}";
       };
     };
 
@@ -65,6 +64,14 @@ in
         enable = true;
         openFirewall = true;
         user = "el";
+      };
+      nginx = {
+        enable = true;
+        virtualHosts.${cfg.domain} = {
+          forceSSL = true;
+          useACMEHost = cfg.domain;
+          acmeRoot = null;
+        };
       };
       prowlarr = {
         enable = true;
