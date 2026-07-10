@@ -8,6 +8,7 @@
     ntfs2btrfs
     picard
     python3
+    unar
     uv
     watchman
     waypipe
