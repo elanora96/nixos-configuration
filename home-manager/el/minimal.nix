@@ -83,7 +83,7 @@
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks."*" = {
+      settings."*" = {
         forwardAgent = false;
         addKeysToAgent = "no";
         compression = false;
