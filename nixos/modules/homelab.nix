@@ -21,12 +21,19 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    sops.secrets = {
-      # keep-sorted start block=yes
-      "porkbun/api_key" = { };
-      "porkbun/secret_api_key" = { };
-      # keep-sorted end
-    };
+    sops.secrets =
+      let
+        rootOwnedNginxGroupRead = {
+          inherit (config.services.nginx) group;
+          mode = "0440";
+        };
+      in
+      {
+        # keep-sorted start block=yes
+        "porkbun/api_key" = rootOwnedNginxGroupRead;
+        "porkbun/secret_api_key" = rootOwnedNginxGroupRead;
+        # keep-sorted end
+      };
 
     environment.systemPackages = with pkgs; [
       qbittorrent-nox
@@ -34,12 +41,12 @@ in
 
     networking.firewall.allowedTCPPorts =
       let
-        acmePlainHTTPChallenge = 80;
-        qbittorrent = 7470;
+        qbittorrentPort = 7470;
       in
       [
-        acmePlainHTTPChallenge
-        qbittorrent
+        80
+        443
+        qbittorrentPort
       ];
 
     security.acme = {
@@ -71,6 +78,27 @@ in
           forceSSL = true;
           useACMEHost = cfg.domain;
           acmeRoot = null;
+          locations."/" =
+            let
+              index = "index.html";
+            in
+            {
+              inherit index;
+              root = pkgs.writeTextDir index ''
+                <!DOCTYPE html lang="en">
+                <html>
+                <head>
+                  <meta charSet="UTF-8"/>
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                  <title>${cfg.domain}</title>
+                </head>
+                <body>
+                  <h1>You have reached</h1>
+                  <p>nothing really</p>
+                </body>
+                </html>
+              '';
+            };
         };
       };
       prowlarr = {
