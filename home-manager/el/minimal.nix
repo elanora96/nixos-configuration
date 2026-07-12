@@ -52,6 +52,7 @@
       enable = true;
       enableZshIntegration = true;
     };
+    nix-index-database.comma.enable = true;
     nix-your-shell = {
       enable = true;
       enableZshIntegration = true;

@@ -10,6 +10,7 @@
   imports = [
     inputs.direnv-instant.homeModules.direnv-instant
     inputs.nixvim.homeModules.nixvim
+    inputs.nix-index-database.homeModules.default
   ];
 
   home = {
