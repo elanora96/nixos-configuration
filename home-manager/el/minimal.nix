@@ -8,20 +8,26 @@
   home = {
     username = "el";
 
-    packages = with pkgs; [
-      # keep-sorted start
-      chezmoi
-      corefonts
-      dust
-      jellyfin-ffmpeg
-      meslo-lgs-nf
-      nil
-      nix-tree
-      nixd
-      nixfmt
-      qrcp
-      # keep-sorted end
-    ];
+    packages =
+      let
+        ttf-derivation = pkgs.callPackage ../modules/fonts { inherit pkgs; };
+      in
+      with pkgs;
+      [
+        # keep-sorted start
+        chezmoi
+        corefonts
+        dust
+        jellyfin-ffmpeg
+        meslo-lgs-nf
+        nil
+        nix-tree
+        nixd
+        nixfmt
+        qrcp
+        ttf-derivation
+        # keep-sorted end
+      ];
   };
 
   fonts.fontconfig = {
