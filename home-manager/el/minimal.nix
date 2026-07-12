@@ -49,6 +49,15 @@
       settings.user.name = "Elanora Manson";
       settings.user.email = "git@elanora.lol";
       signing.format = "openpgp";
+      ignores = [
+        "*~"
+        "*.swp"
+        ".directory"
+        ".DS_Store"
+        "/result"
+        ".pre-commit-config.yaml"
+        ".direnv"
+      ];
     };
     jq.enable = true;
     lazygit.enable = true;
