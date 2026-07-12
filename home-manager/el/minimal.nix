@@ -30,7 +30,9 @@
 
   programs = {
     # keep-sorted start block=yes
+    bat.enable = true;
     bottom.enable = true;
+    btop.enable = true;
     delta = {
       enable = true;
       enableGitIntegration = true;
@@ -43,6 +45,7 @@
     direnv-instant.enable = true;
     fastfetch.enable = true;
     fd.enable = true;
+    fzf.enable = true;
     gh.enable = true;
     git = {
       enable = true;
@@ -150,6 +153,7 @@
     zk = {
       enable = true;
     };
+    zoxide.enable = true;
     zsh = {
       autosuggestion.enable = true;
       enable = true;
