@@ -13,7 +13,6 @@
       kdePackages.filelight
       kdePackages.partitionmanager
       libreoffice-qt6-fresh
-      meslo-lgs-nf
       mkvtoolnix
       nicotine-plus
       orca-slicer

@@ -32,6 +32,8 @@
 
   environment.pathsToLink = [ "/share/zsh" ];
 
+  fonts.fontDir.enable = true;
+
   users = {
     defaultUserShell = pkgs.zsh;
 

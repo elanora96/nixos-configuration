@@ -11,9 +11,10 @@
     packages = with pkgs; [
       # keep-sorted start
       chezmoi
+      corefonts
       dust
-      fzf
       jellyfin-ffmpeg
+      meslo-lgs-nf
       nil
       nix-tree
       nixd
@@ -21,6 +22,10 @@
       qrcp
       # keep-sorted end
     ];
+  };
+
+  fonts.fontconfig = {
+    enable = true;
   };
 
   programs = {
