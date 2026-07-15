@@ -1,4 +1,9 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 
 {
   imports = [
@@ -42,6 +47,7 @@
       extraGroups = [
         "wheel"
         "media"
+        config.services.syncthing.group
       ];
     };
   };

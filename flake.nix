@@ -195,6 +195,7 @@
                   printing
                   scx
                   sops
+                  syncthing
                   tailscale
                   # keep-sorted end
                 ];
