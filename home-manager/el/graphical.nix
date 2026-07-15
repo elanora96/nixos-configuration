@@ -33,6 +33,9 @@
       # For sixel support
       package = pkgs.alacritty-graphics;
     };
+    anki = {
+      enable = true;
+    };
     firefox = {
       enable = true;
       configPath = "${config.xdg.configHome}/mozilla/firefox";
@@ -43,6 +46,10 @@
       config = {
         sub-auto = "fuzzy";
       };
+    };
+    pay-respects = {
+      enable = true;
+      enableZshIntegration = true;
     };
     # keep-sorted end
   };
