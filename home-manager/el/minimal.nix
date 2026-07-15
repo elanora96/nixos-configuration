@@ -70,7 +70,10 @@
     };
     jq.enable = true;
     lazygit.enable = true;
-    lsd.enable = true;
+    lsd = {
+      enable = true;
+      enableZshIntegration = true;
+    };
     nix-index = {
       enable = true;
       enableZshIntegration = true;
@@ -161,10 +164,11 @@
     };
     zoxide.enable = true;
     zsh = {
-      autosuggestion.enable = true;
       enable = true;
+      autosuggestion.enable = true;
       enableCompletion = true;
-      syntaxHighlighting.enable = true;
+      defaultKeymap = "emacs";
+      fastSyntaxHighlighting.enable = true;
     };
     # keep-sorted end
   };
