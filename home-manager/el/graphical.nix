@@ -36,6 +36,7 @@
     firefox = {
       enable = true;
       configPath = "${config.xdg.configHome}/mozilla/firefox";
+      nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
     };
     mpv = {
       enable = true;
