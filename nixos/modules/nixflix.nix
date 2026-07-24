@@ -15,6 +15,7 @@ in
 
   sops.secrets = {
     # keep-sorted start block=yes
+    "jellyfin/alex_password" = { };
     "jellyfin/api_key" = { };
     "jellyfin/el_password" = { };
     # keep-sorted end
@@ -41,14 +42,24 @@ in
     jellyfin = {
       enable = true;
       apiKey._secret = config.sops.secrets."jellyfin/api_key".path;
-      users.el = {
-        policy.isAdministrator = true;
-        password._secret = config.sops.secrets."jellyfin/el_password".path;
-        configuration = {
-          subtitleLanguagePreference = "eng";
-          subtitleMode = "Always";
+      users =
+        let
+          configuration = {
+            subtitleLanguagePreference = "eng";
+            subtitleMode = "Always";
+          };
+        in
+        {
+          el = {
+            inherit configuration;
+            policy.isAdministrator = true;
+            password._secret = config.sops.secrets."jellyfin/el_password".path;
+          };
+          alex = {
+            inherit configuration;
+            password._secret = config.sops.secrets."jellyfin/alex_password".path;
+          };
         };
-      };
       libraries =
         let
           metadataCountryCode = "US";
