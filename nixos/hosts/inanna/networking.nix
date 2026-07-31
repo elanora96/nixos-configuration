@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+_: {
   networking = {
     hostName = "inanna";
     networkmanager.enable = true;
@@ -23,8 +22,7 @@
   services = {
     mullvad-vpn = {
       enable = true;
-      # GUI package
-      package = pkgs.mullvad-vpn;
+      gui.enable = true;
     };
 
     resolved.enable = true;
