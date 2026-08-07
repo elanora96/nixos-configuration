@@ -34,142 +34,160 @@
     enable = true;
   };
 
-  programs = {
-    # keep-sorted start block=yes
-    bat.enable = true;
-    bottom.enable = true;
-    btop.enable = true;
-    delta = {
-      enable = true;
-      enableGitIntegration = true;
-    };
-    direnv = {
-      enable = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
-    };
-    direnv-instant.enable = true;
-    fastfetch.enable = true;
-    fd.enable = true;
-    fzf.enable = true;
-    gh.enable = true;
-    git = {
-      enable = true;
-      settings.user.name = "Elanora Manson";
-      settings.user.email = "git@elanora.lol";
-      signing.format = "openpgp";
-      ignores = [
-        "*~"
-        "*.swp"
-        ".directory"
-        ".DS_Store"
-        "/result"
-        ".pre-commit-config.yaml"
-        ".direnv"
-      ];
-    };
-    jq.enable = true;
-    lazygit.enable = true;
-    lsd = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-    nix-index = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-    nix-index-database.comma.enable = true;
-    nix-your-shell = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-    nixvim = {
-      enable = true;
-      imports = [ ../programs/nixvim ];
-    };
-    pandoc.enable = true;
-    sheldon = {
-      enable = true;
-      enableZshIntegration = true;
-      settings = {
-        shell = "zsh";
-        plugins = {
-          # Need to fix some of these to be more platform agnostic
-          # elanora96-zsh-plugins = {
-          #   github = "elanora96/zsh-plugins";
-          # };
-        };
+  programs =
+    let
+      nixvimRelativeImports = [ ../modules/nixvim ];
+    in
+    {
+      # keep-sorted start block=yes
+      bat.enable = true;
+      bottom.enable = true;
+      btop.enable = true;
+      delta = {
+        enable = true;
+        enableGitIntegration = true;
       };
-    };
-    ssh = {
-      enable = true;
-      enableDefaultConfig = false;
-      settings."*" = {
-        forwardAgent = false;
-        addKeysToAgent = "no";
-        compression = false;
-        serverAliveInterval = 0;
-        serverAliveCountMax = 3;
-        hashKnownHosts = false;
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
+      direnv = {
+        enable = true;
+        enableZshIntegration = true;
+        nix-direnv.enable = true;
       };
-    };
-    starship = {
-      enable = true;
-      enableZshIntegration = true;
-      settings = {
-        add_newline = false;
+      direnv-instant.enable = true;
+      fastfetch.enable = true;
+      fd.enable = true;
+      fzf.enable = true;
+      gh.enable = true;
+      git = {
+        enable = true;
+        settings.user.name = "Elanora Manson";
+        settings.user.email = "git@elanora.lol";
+        signing.format = "openpgp";
+        ignores = [
+          "*~"
+          "*.swp"
+          ".directory"
+          ".DS_Store"
+          "/result"
+          ".pre-commit-config.yaml"
+          ".direnv"
+        ];
       };
-    };
-    tealdeer.enable = true;
-    zellij = {
-      enable = true;
-      enableZshIntegration = true;
-      exitShellOnExit = true;
-      settings = {
-        /**
-          .kdl allows for some Nix Attr breaking patterns
-          Nix -> KDL functions live in home-manager/modules/lib/generators.nix
-          Several keys to note:
-          - _props - Allows for prop attributes
-          - _args - Allows for string arguments
-          - _children - Allows for list of attributes
-        */
-        plugins = {
-          autolock = {
-            _props.location = "https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm";
-            is_enabled = true;
-            # Lock when any open these programs open. They are expected to unlock themselves when closed (e.g., using zellij-nav.nvim plugin).
-            triggers = "nvim|vim|git|lazygit|fzf|yazi|zoxide";
-            # Reaction to input occurs after this many seconds. (default=0.3)
-            # (An existing scheduled reaction prevents additional reactions.)
-            reaction_seconds = "0.3";
-            # Print to Zellij log? (default=false)
-            print_to_log = true;
+      jq.enable = true;
+      lazygit.enable = true;
+      lsd = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+      man = {
+        enable = true;
+        generateCaches = true;
+      };
+      nix-index = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+      nix-index-database.comma.enable = true;
+      nix-your-shell = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+      nixvim = {
+        enable = true;
+        imports = nixvimRelativeImports;
+      };
+      pandoc.enable = true;
+      sheldon = {
+        enable = true;
+        enableZshIntegration = true;
+        settings = {
+          shell = "zsh";
+          plugins = {
+            # Need to fix some of these to be more platform agnostic
+            # elanora96-zsh-plugins = {
+            #   github = "elanora96/zsh-plugins";
+            # };
           };
         };
-        # Load "headless" plugins on start.
-        load_plugins = {
-          autolock = { };
-        };
-        show_startup_tips = false;
-        theme = "gruvbox-dark";
       };
+      ssh = {
+        enable = true;
+        enableDefaultConfig = false;
+        settings."*" = {
+          forwardAgent = false;
+          addKeysToAgent = "no";
+          compression = false;
+          serverAliveInterval = 0;
+          serverAliveCountMax = 3;
+          hashKnownHosts = false;
+          userKnownHostsFile = "~/.ssh/known_hosts";
+          controlMaster = "no";
+          controlPath = "~/.ssh/master-%r@%n:%p";
+          controlPersist = "no";
+        };
+      };
+      starship = {
+        enable = true;
+        enableZshIntegration = true;
+        settings = {
+          add_newline = false;
+        };
+      };
+      tealdeer = {
+        enable = true;
+        enableAutoUpdates = true;
+      };
+      translate-shell = {
+        enable = true;
+        settings = {
+          hl = "en";
+          verbose = true;
+        };
+      };
+      zellij = {
+        enable = true;
+        enableZshIntegration = true;
+        exitShellOnExit = true;
+        settings = {
+          /**
+            .kdl allows for some Nix Attr breaking patterns
+            Nix -> KDL functions live in home-manager/modules/lib/generators.nix
+            Several keys to note:
+            - _props - Allows for prop attributes
+            - _args - Allows for string arguments
+            - _children - Allows for list of attributes
+          */
+          plugins = {
+            autolock = {
+              _props.location = "https://github.com/fresh2dev/zellij-autolock/releases/latest/download/zellij-autolock.wasm";
+              is_enabled = true;
+              # Lock when any open these programs open. They are expected to unlock themselves when closed (e.g., using zellij-nav.nvim plugin).
+              triggers = "nvim|vim|git|lazygit|fzf|yazi|zoxide";
+              # Reaction to input occurs after this many seconds. (default=0.3)
+              # (An existing scheduled reaction prevents additional reactions.)
+              reaction_seconds = "0.3";
+              # Print to Zellij log? (default=false)
+              print_to_log = true;
+            };
+          };
+          # Load "headless" plugins on start.
+          load_plugins = {
+            autolock = { };
+          };
+          show_startup_tips = false;
+          theme = "gruvbox-dark";
+        };
+      };
+      zk = {
+        enable = true;
+      };
+      zoxide.enable = true;
+      zsh = {
+        enable = true;
+        autosuggestion.enable = true;
+        enableCompletion = true;
+        defaultKeymap = "emacs";
+        fastSyntaxHighlighting.enable = true;
+      };
+      # keep-sorted end
     };
-    zk = {
-      enable = true;
-    };
-    zoxide.enable = true;
-    zsh = {
-      enable = true;
-      autosuggestion.enable = true;
-      enableCompletion = true;
-      defaultKeymap = "emacs";
-      fastSyntaxHighlighting.enable = true;
-    };
-    # keep-sorted end
-  };
 }
