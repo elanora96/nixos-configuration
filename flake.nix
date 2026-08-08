@@ -184,6 +184,7 @@
                 modules = with nixosModules; [
                   # keep-sorted start
                   common-nix
+                  forgejo
                   home-assistant
                   home-manager
                   homelab
