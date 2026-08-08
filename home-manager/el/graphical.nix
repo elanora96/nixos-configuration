@@ -7,7 +7,6 @@
     packages = with pkgs; [
       # keep-sorted start
       audacious
-      equibop
       hunspell
       hunspellDicts.en_US
       kdePackages.filelight
@@ -35,6 +34,17 @@
     };
     anki = {
       enable = true;
+    };
+    equibop = {
+      enable = true;
+      # TODO: Move config here
+      # equicord = {
+      #   themes = [ ];
+      #   settings = { plugins = {
+
+      #   }; };
+      # };
+      # settings = { };
     };
     firefox = {
       enable = true;
