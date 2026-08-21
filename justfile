@@ -11,7 +11,14 @@ default:
 # Update flake inputs
 [group('main')]
 update:
-    nix flake update
+    git switch --create flake-update
+    nix flake update --commit-lock-file
+
+    nh os switch --ask
+
+    git switch main
+    git rebase flake-update
+    git branch --delete flake-update
 
 # Get soppy with it
 [group('main')]
