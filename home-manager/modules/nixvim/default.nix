@@ -2,7 +2,6 @@ _: {
   defaultEditor = true;
   viAlias = true;
   vimAlias = true;
-  colorschemes.gruvbox-material-nvim.enable = true;
 
   opts = {
     expandtab = true;

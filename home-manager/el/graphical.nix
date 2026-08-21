@@ -28,7 +28,6 @@
     # keep-sorted start block=yes
     alacritty = {
       enable = true;
-      theme = "gruvbox_material";
       # For sixel support
       package = pkgs.alacritty-graphics;
     };
@@ -62,6 +61,13 @@
       enableZshIntegration = true;
     };
     # keep-sorted end
+  };
+
+  stylix.targets = {
+    firefox.profileNames = [ "default" ];
+    nixvim.enable = true;
+    zellij.enable = true;
+    zed.enable = true;
   };
 
   xdg.configFile."zed/settings.json".text = builtins.toJSON {
@@ -122,11 +128,11 @@
         "program" = "zsh";
       };
     };
-    "theme" = {
-      "mode" = "system";
-      "light" = "One Light";
-      "dark" = "Gruvbox Material Neovim Dark";
-    };
+    # "theme" = {
+    #   "mode" = "system";
+    #   "light" = "One Light";
+    #   "dark" = "Gruvbox Material Neovim Dark";
+    # };
     "ui_font_size" = 16;
     # keep-sorted end
   };

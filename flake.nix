@@ -67,6 +67,13 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Theming framework for NixOS, Home Manager, nix-darwin, and Nix-on-Droid
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
   };
 
   outputs =
@@ -199,6 +206,7 @@
                   printing
                   scx
                   sops
+                  stylix
                   syncthing
                   tailscale
                   # keep-sorted end

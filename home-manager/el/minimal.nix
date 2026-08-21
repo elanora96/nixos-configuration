@@ -82,6 +82,14 @@
         enable = true;
         generateCaches = true;
       };
+      nh = {
+        enable = true;
+        flake = "~/Projects/nixos-configuration";
+        clean = {
+          enable = true;
+          extraArgs = "--keep-since 5d --keep 3";
+        };
+      };
       nix-index = {
         enable = true;
         enableZshIntegration = true;
@@ -174,7 +182,6 @@
             autolock = { };
           };
           show_startup_tips = false;
-          theme = "gruvbox-dark";
         };
       };
       zk = {
