@@ -10,8 +10,7 @@ let
   # TODO: This shouldn't be a thing really
   unproxiedServiceNamePort = {
     # keep-sorted start block=yes
-    home-assistant = config.services.home-assistant.config.http.server_port;
-    # lidarr = config.services.lidarr.settings.server.port;
+    home-assistant = 8123;
     ollama = config.services.ollama.port;
     open-webui = config.services.open-webui.port;
     prowlarr = config.services.prowlarr.settings.server.port;
