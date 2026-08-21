@@ -9,6 +9,9 @@ let
   stateDir = "${mediaDir}/data/.state";
   movieDir = "${mediaDir}/Videos/Movies/";
   showDir = "${mediaDir}/Videos/TV Shows/";
+  downloadsDir = "${mediaDir}/Downloads";
+  musicDir = "${mediaDir}/Music";
+  mediaUsers = [ "el" ];
 in
 {
   imports = [ inputs.nixflix.nixosModules.default ];
@@ -18,27 +21,29 @@ in
     "jellyfin/alex_password" = { };
     "jellyfin/api_key" = { };
     "jellyfin/el_password" = { };
+    "lidarr/api_key" = { };
+    "lidarr/password" = { };
+    "opensubtitles/api_key" = { };
+    "opensubtitles/password" = { };
+    "qbittorrent/app_password" = { };
     # keep-sorted end
   };
 
   nixflix = {
-    inherit mediaDir stateDir;
+    inherit
+      downloadsDir
+      mediaDir
+      mediaUsers
+      stateDir
+      ;
     enable = true;
 
-    nginx = {
-      inherit (config.homelab) domain;
+    # keep-sorted start block=yes
+
+    downloadarr = {
       enable = true;
-      enableACME = true;
-      forceSSL = true;
+      qbittorrent.enable = true;
     };
-
-    postgres.enable = true;
-
-    theme = {
-      enable = true;
-      name = "organizr";
-    };
-
     jellyfin = {
       enable = true;
       apiKey._secret = config.sops.secrets."jellyfin/api_key".path;
@@ -79,7 +84,167 @@ in
             seasonZeroDisplayName = "Specials";
             paths = [ showDir ];
           };
+          Music = {
+            inherit metadataCountryCode preferredMetadataLanguage;
+            collectionType = "music";
+            paths = config.nixflix.lidarr.mediaDirs;
+          };
+        };
+      system.pluginRepositories = {
+        "Intro Skipper" = {
+          url = "https://raw.githubusercontent.com/intro-skipper/manifest/d56c137ae182c04a894dd700c25b04c8d2eba855/10.11/manifest.json";
+          hash = "sha256-ENwn7Ei3WU2REcxnFNwzF6NGFUcnH2kJ4E5TKbpcDII=";
+        };
+      };
+      plugins =
+        let
+          inherit (inputs.nixflix.lib.jellyfinPlugins) fromRepo;
+        in
+        {
+          subbuzz = {
+            enable = true;
+            config = {
+              OpenSubApiKey._secret = config.sops.secrets."opensubtitles/api_key".path;
+              OpenSubPassword._secret = config.sops.secrets."opensubtitles/password".path;
+              OpenSubUserName = "turkey4637";
+              EnableOpenSubtitles = true;
+              EnableYifySubtitles = true;
+              Cache.SubLifeInMinutes = "Always";
+            };
+          };
+          "Subtitle Extract" = {
+            enable = true;
+            config.ExtractionDuringLibraryScan = true;
+          };
+          "Intro Skipper" = {
+            package = fromRepo {
+              version = "1.10.11.17";
+              hash = "sha256-cfEnLqKeEGpQSth3NPjDnxCkgv2pePfgCXfVIOrYSiQ=";
+            };
+            config = {
+              ExcludeSeries = "";
+              AutoDetectIntros = true;
+              AnalyzeSeasonZero = false;
+              PreferChromaprint = false;
+              CacheFingerprints = true;
+              UseAlternativeBlackFrameAnalyzer = false;
+              UpdateMediaSegments = true;
+              RebuildMediaSegments = true;
+              ScanIntroduction = true;
+              ScanCredits = true;
+              ScanRecap = true;
+              ScanPreview = true;
+              ScanCommercial = false;
+              AnalysisPercent = "25";
+              AnalysisLengthLimit = "10";
+              FullLengthChapters = false;
+              SkipFirstEpisode = false;
+              SkipFirstEpisodeAnime = false;
+              MinimumIntroDuration = "15";
+              MaximumIntroDuration = "120";
+              MinimumCreditsDuration = "15";
+              MaximumCreditsDuration = "450";
+              MaximumMovieCreditsDuration = "900";
+              MinimumRecapDuration = "15";
+              MaximumRecapDuration = "120";
+              MinimumPreviewDuration = "15";
+              MaximumPreviewDuration = "120";
+              MinimumCommercialDuration = "15";
+              MaximumCommercialDuration = "120";
+              BlackFrameMinimumPercentage = "85";
+              BlackFrameThreshold = "28";
+              UseChapterMarkersBlackFrame = true;
+              AdjustIntroBasedOnChapters = true;
+              AdjustIntroBasedOnSilence = true;
+              SnapToKeyframe = true;
+              EndSnapThreshold = "2";
+              AdjustWindowInward = "5";
+              AdjustWindowOutward = "2";
+              ChapterAnalyzerIntroductionPattern = "(^|\\s)(Intro|Introduction|OP|Opening)(?!\\sEnd)(\\s|$)";
+              ChapterAnalyzerEndCreditsPattern = "(^|\\s)(Credits?|ED|Ending|Outro)(?!\\sEnd)(\\s|$)";
+              ChapterAnalyzerPreviewPattern = "(^|\\s)(Preview|PV|Sneak\\s?Peek|Coming\\s?(Up|Soon)|Next\\s+(time|on|episode)|Extra|Teaser|Trailer)(?!\\sEnd)(\\s|:|$)";
+              ChapterAnalyzerRecapPattern = "(^|\\s)(Re?cap|Sum{1,2}ary|Prev(ious(ly)?)?|(Last|Earlier)(\\s\\w+)?|Catch[ -]up)(?!\\sEnd)(\\s|:|$)";
+              ChapterAnalyzerCommercialPattern = "(^|\\s)(Ad(vert(isement)?)?|Commercial)(?!\\sEnd)(\\s|$)";
+              IntroEndOffset = "0";
+              IntroStartOffset = "0";
+              MaximumFingerprintPointDifferences = 6;
+              MaximumTimeSkip = 3.5;
+              InvertedIndexShift = 2;
+              SilenceDetectionMaximumNoise = "-50";
+              SilenceDetectionMinimumDuration = "0.33";
+              MaxParallelism = "2";
+              ProcessThreads = "0";
+              ProcessPriority = "BelowNormal";
+              UseFileTransformationPlugin = false;
+              SkipbuttonHideDelay = "8";
+              EnableMainMenu = true;
+              FileTransformationPluginEnabled = false;
+            };
+          };
         };
     };
+    lidarr = {
+      enable = true;
+      mediaDirs = [ musicDir ];
+      config = {
+        apiKey._secret = config.sops.secrets."lidarr/api_key".path;
+        hostConfig.password._secret = config.sops.secrets."lidarr/password".path;
+      };
+    };
+    nginx = {
+      inherit (config.homelab) domain;
+      enable = true;
+      enableACME = true;
+      forceSSL = true;
+    };
+    postgres.enable = true;
+    theme = {
+      enable = true;
+      name = "catppuccin-macchiato";
+    };
+    torrentClients = {
+      qbittorrent = {
+        inherit downloadsDir;
+        enable = true;
+        vpn.enable = false;
+        password._secret = config.sops.secrets."qbittorrent/app_password".path;
+        serverConfig = {
+          LegalNotice.Accepted = true;
+          BitTorrent = {
+            Session = {
+              AddTorrentStopped = false;
+              QueueingSystemEnabled = true;
+
+              # Required for port forwarding from a VPN
+              ReannounceWhenAddressChanged = true;
+            };
+          };
+          Preferences = {
+            General.Locale = "en";
+            WebUI =
+              let
+                # TODO:
+                # While the password is bare in config
+                # And will end up in the nix store
+                # It is already hashed
+                # https://codeberg.org/feathecutie/qbittorrent_password
+                # But I do wish I could use sops for it
+                # qbittorrent doesn't make this easy
+                # Can't use a password file or an environment variable
+                hashedPBKDF2 = "X2o9OGuXHOAkBE2sEAFnCw==:SAy4Hy6Ras+4JfSVf8GjnWXXxBnZPTm5jPL8A3b4jb+NuE6c2poCRXcV/IO3E8FpWeVDPfIZoYkjcChVACqZew==";
+              in
+              {
+                Username = "admin";
+                Password_PBKDF2 = "@ByteArray(${hashedPBKDF2})";
+              };
+          };
+        };
+      };
+    };
+    vpn = {
+      enable = true;
+      wgConfFile = config.sops.secrets."wireguard_conf".path;
+    };
+    # keep-sorted end
   };
 }

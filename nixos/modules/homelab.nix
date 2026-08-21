@@ -11,11 +11,10 @@ let
   unproxiedServiceNamePort = {
     # keep-sorted start block=yes
     home-assistant = config.services.home-assistant.config.http.server_port;
-    lidarr = config.services.lidarr.settings.server.port;
+    # lidarr = config.services.lidarr.settings.server.port;
     ollama = config.services.ollama.port;
     open-webui = config.services.open-webui.port;
     prowlarr = config.services.prowlarr.settings.server.port;
-    qbittorrent-web = 7470;
     radarr = config.services.radarr.settings.server.port;
     sonarr = config.services.sonarr.settings.server.port;
     syncthing = lib.removePrefix "127.0.0.1:" config.services.syncthing.guiAddress;
@@ -49,14 +48,9 @@ in
         # keep-sorted end
       };
 
-    environment.systemPackages = with pkgs; [
-      qbittorrent-nox
-    ];
-
     networking.firewall.allowedTCPPorts = [
       80
       443
-      unproxiedServiceNamePort.qbittorrent-web
     ];
 
     security.acme = {
@@ -77,11 +71,6 @@ in
 
     services = {
       # keep-sorted start block=yes
-      lidarr = {
-        enable = true;
-        openFirewall = true;
-        user = "el";
-      };
       nginx = {
         enable = true;
         recommendedTlsSettings = true;
