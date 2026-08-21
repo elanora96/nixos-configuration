@@ -1,3 +1,5 @@
+type := `grep -q 'NAME=NixOS' /etc/*-release && echo "os" || echo "home"`
+
 # just --list
 [group('default')]
 default:
@@ -20,6 +22,11 @@ sop:
 [group('main')]
 switch:
     sudo nixos-rebuild switch --flake . --show-trace
+
+# List generations
+[group('main')]
+gens:
+    {{ if type == "os" { "nixos-rebuild list-generations" } else { "home-manager generations" } }}
 
 # Misc
 # ---
