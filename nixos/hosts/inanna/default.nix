@@ -16,7 +16,7 @@
 
     # Hardware modules
     ../../hardware/cpu-amd-r7-3700x
-    ../../hardware/gpu-nvidia-gtx-1070 # Includes driver cfg
+    ../../hardware/gpu-nvidia-gtx-1070
     inputs.nixos-hardware.nixosModules.common-pc-ssd
   ];
 
@@ -58,8 +58,7 @@
     storage = "/mnt/media";
   };
 
-  time.timeZone = "America/Los_Angeles";
-  i18n.defaultLocale = "en_US.UTF-8";
+  region = "us-westcoast";
 
   system.stateVersion = "24.05"; # Don't touch!
 }

@@ -204,6 +204,7 @@
                   paperless
                   perSystem-pkgs
                   printing
+                  region
                   scx
                   sops
                   stylix
