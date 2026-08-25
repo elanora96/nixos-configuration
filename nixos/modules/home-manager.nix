@@ -5,7 +5,7 @@
     {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
-      home-manager.backupFileExtension = "hm-bak";
+      home-manager.backupFileExtension = "hm-bak-${inputs.self.lastModifiedDate}";
       home-manager.extraSpecialArgs = { inherit inputs; };
     }
   ];
