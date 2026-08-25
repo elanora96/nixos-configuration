@@ -16,18 +16,25 @@ in
 {
   imports = [ inputs.nixflix.nixosModules.default ];
 
-  sops.secrets = {
-    # keep-sorted start block=yes
-    "jellyfin/alex_password" = { };
-    "jellyfin/api_key" = { };
-    "jellyfin/el_password" = { };
-    "lidarr/api_key" = { };
-    "lidarr/password" = { };
-    "opensubtitles/api_key" = { };
-    "opensubtitles/password" = { };
-    "qbittorrent/app_password" = { };
-    # keep-sorted end
-  };
+  sops.secrets =
+    let
+      rootOwnedMediaGroupRead = {
+        group = "media";
+        mode = "0440";
+      };
+    in
+    {
+      # keep-sorted start block=yes
+      "jellyfin/alex_password" = { };
+      "jellyfin/api_key" = rootOwnedMediaGroupRead;
+      "jellyfin/el_password" = { };
+      "lidarr/api_key" = rootOwnedMediaGroupRead;
+      "lidarr/password" = rootOwnedMediaGroupRead;
+      "opensubtitles/api_key" = { };
+      "opensubtitles/password" = { };
+      "qbittorrent/app_password" = { };
+      # keep-sorted end
+    };
 
   nixflix = {
     inherit
@@ -37,6 +44,7 @@ in
       stateDir
       ;
     enable = true;
+    serviceDependencies = [ "mnt-media.mount" ];
 
     # keep-sorted start block=yes
 
