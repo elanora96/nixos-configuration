@@ -11,7 +11,7 @@
       hunspellDicts.en_US
       kdePackages.filelight
       kdePackages.partitionmanager
-      libreoffice-qt6-fresh
+      libreoffice-qt-stable
       mkvtoolnix
       nicotine-plus
       orca-slicer
