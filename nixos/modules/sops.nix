@@ -12,9 +12,13 @@
 
       age.keyFile = "/home/el/.config/sops/age/keys.txt";
 
-      secrets."wireguard_conf" = {
-        sopsFile = secretsFolderPath + /wireguard.ini;
-        format = "ini";
+      secrets = {
+        "wireguard_conf" = {
+          sopsFile = secretsFolderPath + /wireguard.conf;
+          format = "binary";
+          group = "media";
+          mode = "0440";
+        };
       };
     };
 }
