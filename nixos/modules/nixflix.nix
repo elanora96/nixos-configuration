@@ -2,6 +2,7 @@
   lib,
   config,
   inputs,
+  pkgs,
   ...
 }:
 let
@@ -252,7 +253,86 @@ in
     vpn = {
       enable = true;
       wgConfFile = config.sops.secrets."wireguard_conf".path;
+      accessibleFrom = [
+        "192.0.0.0/24"
+        "127.0.0.0/24"
+        "100.0.0.0/24"
+      ];
     };
     # keep-sorted end
   };
+  systemd.services.vpn-port-forward =
+    let
+      qbCfg = config.nixflix.torrentClients.qbittorrent;
+    in
+    lib.mkIf (config.nixflix.vpn.enable && qbCfg.vpn.enable) {
+      description = "VPN port forwarding for qBittorrent";
+      after = [
+        "${config.systemd.services.qbittorrent.vpnConfinement.vpnNamespace}.service"
+        "qbittorrent.service"
+      ];
+      requires = [
+        "${config.systemd.services.qbittorrent.vpnConfinement.vpnNamespace}.service"
+        "qbittorrent.service"
+      ];
+      wantedBy = [ "multi-user.target" ];
+
+      path = [
+        pkgs.curl
+        pkgs.jq
+        pkgs.libnatpmp
+        pkgs.iproute2
+        pkgs.gawk
+      ];
+
+      serviceConfig = {
+        Type = "simple";
+        Restart = "on-failure";
+        RestartSec = "5s";
+        ExecStart =
+          let
+            ns = config.systemd.services.qbittorrent.vpnConfinement.vpnNamespace;
+            qbHost = "http://${qbCfg.serverConfig.Preferences.WebUI.Address}:${toString config.services.qbittorrent.webuiPort}";
+            qbUser = qbCfg.serverConfig.Preferences.WebUI.Username;
+            qbPassFile = config.sops.secrets."qbittorrent/app_password".path;
+          in
+          pkgs.writeShellScript "vpn-port-forward" ''
+            QB_HOST="${qbHost}"
+            QB_USER="${qbUser}"
+            QB_PASS=$(cat ${qbPassFile})
+
+            QB_COOKIE=$(curl -s -c - --data "username=$QB_USER&password=$QB_PASS" \
+              "$QB_HOST/api/v2/auth/login" | grep SID | awk '{print $NF}')
+
+            CURRENT_PORT=$(curl -s -b "SID=$QB_COOKIE" \
+              "$QB_HOST/api/v2/app/preferences" | jq '.listen_port')
+
+            while true; do
+              UDP_OUT=$(ip netns exec ${ns} natpmpc -a 1 0 udp 60 -g 10.2.0.1)
+              ip netns exec ${ns} natpmpc -a 1 0 tcp 60 -g 10.2.0.1
+
+              PORT=$(echo "$UDP_OUT" | grep "Mapped public port" | awk '{print $4}')
+
+              if [ -z "$PORT" ]; then
+                echo "Failed to get port, is the tunnel up?"
+                sleep 5
+                continue
+              fi
+
+              if [ "$PORT" != "$CURRENT_PORT" ]; then
+                echo "Port changed: $CURRENT_PORT -> $PORT, updating qBittorrent..."
+                curl -s -b "SID=$QB_COOKIE" \
+                  --data "json={\"listen_port\":$PORT,\"random_port\":false}" \
+                  "$QB_HOST/api/v2/app/setPreferences"
+                curl -s -b "SID=$QB_COOKIE" \
+                  --data "hashes=all" \
+                  "$QB_HOST/api/v2/torrents/reannounce"
+                CURRENT_PORT=$PORT
+              fi
+
+              sleep 45
+            done
+          '';
+      };
+    };
 }
