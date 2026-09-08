@@ -20,14 +20,12 @@
     inputs.nixos-hardware.nixosModules.common-pc-ssd
   ];
 
-  nix = {
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-    optimise.automatic = true;
+  modules = {
+    inherit (config.flake.modules.nixos) base gaming;
   };
+
+  # This was necessary at one point? Is it still?
+  # nix.settings.download-buffer-size = 524288000;
 
   boot.loader = {
     systemd-boot.enable = true;

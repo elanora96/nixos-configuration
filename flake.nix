@@ -99,6 +99,7 @@
           inputs.git-hooks-nix.flakeModule
           inputs.home-manager.flakeModules.home-manager
           inputs.treefmt-nix.flakeModule
+          inputs.flake-parts.flakeModules.modules
         ];
         perSystem =
           {

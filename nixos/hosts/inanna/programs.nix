@@ -1,7 +1,6 @@
 _: {
   programs = {
     # keep-sorted start block=yes
-
     appimage = {
       enable = true;
       binfmt = true;
@@ -26,12 +25,6 @@ _: {
       withRuby = true;
     };
     nix-ld.enable = true;
-    steam = {
-      enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-      localNetworkGameTransfers.openFirewall = true;
-    };
     zsh = {
       enable = true;
       autosuggestions.enable = true;
