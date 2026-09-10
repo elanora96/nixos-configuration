@@ -223,6 +223,9 @@ in
             };
           };
           Preferences = {
+            # Toggling the line below will reset banned IPs
+            # Useful if a misconfigured API gets localhost banned...
+            # "IPFilter \ BannedIPs" = "";
             General.Locale = "en";
             WebUI =
               let
