@@ -209,7 +209,7 @@ in
       qbittorrent = {
         inherit downloadsDir;
         enable = true;
-        vpn.enable = true;
+        vpn.enable = false;
         password._secret = config.sops.secrets."qbittorrent/app_password".path;
         serverConfig = {
           LegalNotice.Accepted = true;
