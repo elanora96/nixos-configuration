@@ -86,13 +86,13 @@ in
               virtualHosts = builtins.filter (virtualHost: virtualHost != "_") (
                 builtins.attrNames config.services.nginx.virtualHosts
               );
-              proxiedLinks = map (service: "<a href=\"https://${service}\">${service}</a>") virtualHosts;
+              proxiedLinks = map (service: "<a href=\"https://${service}/\">${service}</a>") virtualHosts;
               unproxiedLinks = lib.mapAttrsToList (
                 name: port:
                 let
                   url = "http://inanna.internal:${toString port}";
                 in
-                "<a href=\"${url}\">${name} (${url})</a>"
+                "<a href=\"${url}/\">${name} (${url})</a>"
               ) unproxiedServiceNamePort;
               toListItems = x: "<li>${builtins.concatStringsSep "</li><li>" x}</li>";
             in
