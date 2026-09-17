@@ -238,6 +238,24 @@
         "type": "github"
       }
     },
+    "nix-gram-extensions": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1788195998,
+        "narHash": "sha256-Q2kgu0CC6w0i7JRuyNk6oR21iqxPgbfuFJAIC6jyRfc=",
+        "ref": "refs/heads/main",
+        "rev": "f4987f77839983c87a7551cf1b175d795ed1c3ef",
+        "revCount": 58,
+        "type": "git",
+        "url": "https://codeberg.org/niklaskorz/nix-gram-extensions"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/niklaskorz/nix-gram-extensions"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -285,7 +303,7 @@
     },
     "nixos-hardware": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1788942796,
@@ -304,6 +322,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1783503551,
+        "narHash": "sha256-bKMNrMZd/B56gE31iFABBHTbkzAptLy7G8G235yOv8Q=",
+        "owner": "niklaskorz",
+        "repo": "nixpkgs",
+        "rev": "6da901a408ae91ee140bc8e94081d758f0a73126",
+        "type": "github"
+      },
+      "original": {
+        "owner": "niklaskorz",
+        "ref": "wasip2-rustc",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1767892417,
         "narHash": "sha256-8bW3q88CEg2u4hSP66Vf4lpbLonHz7hqDNBMcCY7E9U=",
         "rev": "3497aa5c9457a9d88d71fa93a4a8368816fbeeba",
@@ -315,7 +349,7 @@
         "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1788881743,
         "narHash": "sha256-2V9GZGvPfrNzxFozhI9dcqV+c3QdA8YZrvAAzqEB+dI=",
@@ -331,7 +365,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1787631388,
         "narHash": "sha256-vMiXptXarfSdJb1Gkc+FYVOAibuBRj7qxGa8z68q1Uw=",
@@ -352,7 +386,7 @@
         "flake-parts": [
           "flake-parts"
         ],
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_4",
         "systems": "systems"
       },
       "locked": {
@@ -400,10 +434,11 @@
         "flake-parts": "flake-parts",
         "git-hooks-nix": "git-hooks-nix",
         "home-manager": "home-manager",
+        "nix-gram-extensions": "nix-gram-extensions",
         "nix-index-database": "nix-index-database",
         "nixflix": "nixflix",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "nixvim": "nixvim",
         "sops-nix": "sops-nix",
         "stylix": "stylix",

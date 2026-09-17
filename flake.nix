@@ -74,6 +74,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-parts.follows = "flake-parts";
     };
+
+    # Nix packages and modules for Gram extensions
+    nix-gram-extensions.url = "git+https://codeberg.org/niklaskorz/nix-gram-extensions";
+
   };
 
   outputs =
