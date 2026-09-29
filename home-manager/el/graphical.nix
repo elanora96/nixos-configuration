@@ -76,7 +76,7 @@
     "edit_predictions" = {
       "mode" = "subtle";
     };
-    "icon_theme" = "Colored Zed Icons Theme Dark";
+    "icon_theme" = "Catppuccin Macchiato";
     "lsp" = {
       "lua-language-server" = {
         "settings" = {
@@ -87,33 +87,28 @@
           };
         };
       };
-      "nixd" = {
-        "initialization_options" = {
-          "formatting" = {
-            "command" = [ "nixfmt" ];
-          };
-          "options" = {
-            # If this is omitted; default search path (<nixpkgs>) will be used.
-            "nixos" = {
-              "expr" =
-                "(builtins.getFlake \"/home/el/Projects/nixos-configuration\").nixosConfigurations.inanna.options";
+      "nixd" =
+        let
+          flakeExpr = "(builtins.getFlake \"/home/el/Projects/nixos-configuration\")";
+        in
+        {
+          "initialization_options" = {
+            "formatting" = {
+              "command" = [ "nixfmt" ];
             };
-            # By default there is no home-manager options completion
-            "home_manager" = {
-              "expr" =
-                "(builtins.getFlake \"/home/el/Projects/nixos-configuration\").nixosConfigurations.inanna.options.home-manager.users.type.getSubOptions []";
-            };
-            # For flake-parts options.
-            "flake-parts" = {
-              "expr" = "(builtins.getFlake \"/home/el/Projects/nixos-configuration\").debug.options";
-            };
-            # For a `perSystem` flake-parts option =
-            "flake-parts2" = {
-              "expr" = "(builtins.getFlake \"/home/el/Projects/nixos-configuration\").currentSystem.options";
+            "options" = {
+              # If this is omitted; default search path (<nixpkgs>) will be used.
+              "nixos"."expr" = "${flakeExpr}.nixosConfigurations.inanna.options";
+              # By default there is no home-manager options completion
+              "home_manager"."expr" =
+                "${flakeExpr}.nixosConfigurations.inanna.options.home-manager.users.type.getSubOptions []";
+              # For flake-parts options.
+              "flake-parts"."expr" = "${flakeExpr}.debug.options";
+              # For a `perSystem` flake-parts option =
+              "flake-parts2"."expr" = "${flakeExpr}.currentSystem.options";
             };
           };
         };
-      };
     };
     "project_panel" = {
       "dock" = "left";
@@ -128,11 +123,12 @@
         "program" = "zsh";
       };
     };
-    # "theme" = {
-    #   "mode" = "system";
-    #   "light" = "One Light";
-    #   "dark" = "Gruvbox Material Neovim Dark";
-    # };
+    "theme" = {
+      "mode" = "system";
+      "light" = "Catppuccin Latte";
+      "dark" = "Catppuccin Macchiato";
+    };
+    "ui_font_family" = ".SystemUIFont";
     "ui_font_size" = 16;
     # keep-sorted end
   };
