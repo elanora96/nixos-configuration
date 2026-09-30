@@ -11,7 +11,6 @@ let
   unproxiedServiceNamePort = {
     # keep-sorted start block=yes
     home-assistant = 8123;
-    ollama = config.services.ollama.port;
     open-webui = config.services.open-webui.port;
     prowlarr = config.services.prowlarr.settings.server.port;
     radarr = config.services.radarr.settings.server.port;

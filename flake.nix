@@ -203,6 +203,7 @@
                   hosts.inanna.home
                   hosts.inanna.system
                   kde
+                  llama-cpp
                   llm
                   nixflix
                   openssh

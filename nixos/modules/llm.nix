@@ -1,28 +1,12 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   services = {
-    ollama = {
-      enable = true;
-      package = pkgs.ollama-cuda.override {
-        # Does not compile with cuda library needed for Pascal
-        # https://github.com/NixOS/nixpkgs/issues/421775
-        # nvidia-smi --query-gpu=compute_cap --format=csv
-        cudaArches = [ "61" ];
-      };
-      loadModels = [
-        "qwen3.5:9b"
-        "fredrezones55/qwen3.5-opus:4b"
-      ];
-      openFirewall = true;
-    };
-
     open-webui = {
-      enable = true;
-      openFirewall = true;
+      enable = false;
       port = 8182; # The audacity for the default port to be 8080
       environment =
         let
-          inherit (config.services.ollama) host port;
+          inherit (config.services.llama-cpp.settings) host port;
         in
         {
           OLLAMA_API_BASE_URL = "http://${host}:${toString port}/api";
