@@ -58,7 +58,7 @@ in
   services.gitea-actions-runner = {
     package = pkgs.forgejo-runner;
     instances.default = {
-      enable = true;
+      enable = false;
       name = "jude";
       url = DOMAIN;
       tokenFile = config.sops.secrets."forgejo/runner-token".path;
