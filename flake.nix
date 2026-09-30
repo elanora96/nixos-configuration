@@ -156,6 +156,7 @@
               ];
               packages = [
                 pkgs.just
+                pkgs.sops
               ];
             };
           };
