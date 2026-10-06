@@ -2,8 +2,9 @@
   description = "elanora96's flake based nixos config(s)";
 
   inputs = {
-    # (Unstable) Nix Packages collection
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # (Unstable) Nixpkgs Tarball
+    # https://discourse.nixos.org/t/psa-use-nixos-org-tarballs-for-your-flake-inputs/79950
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
     # NixOS modules covering hardware quirks
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
