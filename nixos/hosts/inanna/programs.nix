@@ -12,6 +12,10 @@ _: {
         init.defaultBranch = "main";
       };
     };
+    idescriptor = {
+      enable = true;
+      users = [ "el" ];
+    };
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -35,5 +39,16 @@ _: {
       syntaxHighlighting.enable = true;
     };
     # keep-sorted end
+  };
+
+  # Required for iDescriptor
+  services.avahi = {
+    enable = true;
+    openFirewall = true;
+    reflector = true;
+    publish = {
+      enable = true;
+      userServices = true;
+    };
   };
 }
