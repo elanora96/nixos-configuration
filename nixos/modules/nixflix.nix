@@ -33,7 +33,11 @@ in
       "lidarr/password" = rootOwnedMediaGroupRead;
       "opensubtitles/api_key" = { };
       "opensubtitles/password" = { };
-      "qbittorrent/app_password" = { };
+      "qbittorrent/password" = { };
+      "sabnzb/api_key" = { };
+      "sabnzb/nzb_key" = { };
+      "sabnzb/password" = { };
+      "sabnzb/username" = { };
       # keep-sorted end
     };
 
@@ -203,7 +207,7 @@ in
         inherit downloadsDir;
         enable = true;
         vpn.enable = false;
-        password._secret = config.sops.secrets."qbittorrent/app_password".path;
+        password._secret = config.sops.secrets."qbittorrent/password".path;
         serverConfig = {
           LegalNotice.Accepted = true;
           BitTorrent = {
@@ -213,6 +217,11 @@ in
 
               # Required for port forwarding from a VPN
               ReannounceWhenAddressChanged = true;
+
+              # Required for private trackers
+              DHTEnabled = false;
+              PeXEnabled = false;
+              LSDEnabled = false;
             };
           };
           Preferences = {
@@ -237,6 +246,20 @@ in
                 Password_PBKDF2 = "@ByteArray(${hashedPBKDF2})";
               };
           };
+        };
+      };
+    };
+    usenetClients = {
+      sabnzbd = {
+        enable = true;
+        settings = {
+          misc = {
+            username._secret = config.sops.secrets."sabnzb/username".path;
+            password._secret = config.sops.secrets."sabnzb/password".path;
+            api_key._secret = config.sops.secrets."sabnzb/api_key".path;
+            nzb_key._secret = config.sops.secrets."sabnzb/nzb_key".path;
+          };
+          servers = [ ];
         };
       };
     };
