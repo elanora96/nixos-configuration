@@ -205,7 +205,6 @@
                   hosts.inanna.system
                   kde
                   llama-cpp
-                  llm
                   nixflix
                   openssh
                   paperless
