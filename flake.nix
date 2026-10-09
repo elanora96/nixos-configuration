@@ -211,6 +211,7 @@
                   paperless
                   perSystem-pkgs
                   printing
+                  protonmail
                   region
                   scx
                   sops
