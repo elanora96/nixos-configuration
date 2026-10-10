@@ -17,29 +17,26 @@ in
 {
   imports = [ inputs.nixflix.nixosModules.default ];
 
-  sops.secrets =
-    let
-      rootOwnedMediaGroupRead = {
-        group = "media";
-        mode = "0440";
-      };
-    in
-    {
-      # keep-sorted start block=yes
-      "jellyfin/alex_password" = { };
-      "jellyfin/api_key" = rootOwnedMediaGroupRead;
-      "jellyfin/el_password" = { };
-      "lidarr/api_key" = rootOwnedMediaGroupRead;
-      "lidarr/password" = rootOwnedMediaGroupRead;
-      "opensubtitles/api_key" = { };
-      "opensubtitles/password" = { };
-      "qbittorrent/password" = { };
-      "sabnzb/api_key" = { };
-      "sabnzb/nzb_key" = { };
-      "sabnzb/password" = { };
-      "sabnzb/username" = { };
-      # keep-sorted end
-    };
+  sops.secrets = {
+    # keep-sorted start block=yes
+    "indexer-keys/IPTorrents/passkey" = { };
+    "jellyfin/alex_password" = { };
+    "jellyfin/api_key" = { };
+    "jellyfin/el_password" = { };
+    "lidarr/api_key" = { };
+    "lidarr/password" = { };
+    "opensubtitles/api_key" = { };
+    "opensubtitles/password" = { };
+    "prowlarr/api_key" = { };
+    "prowlarr/password" = { };
+    "qbittorrent/password" = { };
+    "sabnzb/api_key" = { };
+    "sabnzb/nzb_key" = { };
+    "sabnzb/password" = { };
+    "sabnzb/username" = { };
+    "usenet/nzbgeek/api_key" = { };
+    # keep-sorted end
+  };
 
   nixflix = {
     inherit
