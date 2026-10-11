@@ -11,6 +11,7 @@
       hunspellDicts.en_US
       kdePackages.filelight
       kdePackages.partitionmanager
+      lagrange-tui
       libreoffice-qt-stable
       mkvtoolnix
       nicotine-plus
