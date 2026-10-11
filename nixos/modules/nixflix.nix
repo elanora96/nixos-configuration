@@ -205,7 +205,6 @@ in
           BitTorrent = {
             Session = {
               AddTorrentStopped = false;
-              QueueingSystemEnabled = true;
 
               # Required for port forwarding from a VPN
               ReannounceWhenAddressChanged = true;
@@ -214,6 +213,9 @@ in
               DHTEnabled = false;
               PeXEnabled = false;
               LSDEnabled = false;
+
+              # If I find my limits I find my limits
+              QueueingSystemEnabled = false;
             };
           };
           Preferences = {
