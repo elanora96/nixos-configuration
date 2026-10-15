@@ -288,16 +288,17 @@
         "vpn-confinement": "vpn-confinement"
       },
       "locked": {
-        "lastModified": 1791843785,
-        "narHash": "sha256-UyseHFRxsj4FFOV7Zb9A0HFw+x/pRKKnQ1F0bKKsQ8E=",
+        "lastModified": 1791566324,
+        "narHash": "sha256-Z/To88KmmTIDcX7KxfaeHkw7qOToD8JPC7kFYs5mido=",
         "owner": "kiriwalawren",
         "repo": "nixflix",
-        "rev": "b92d2663aaddefddab1f52c9d705a6e66f43980c",
+        "rev": "39e75c77fb10dc00937ae2ecf71b6773e1455b88",
         "type": "github"
       },
       "original": {
         "owner": "kiriwalawren",
         "repo": "nixflix",
+        "rev": "39e75c77fb10dc00937ae2ecf71b6773e1455b88",
         "type": "github"
       }
     },
@@ -616,11 +617,11 @@
     },
     "vpn-confinement": {
       "locked": {
-        "lastModified": 1791310298,
-        "narHash": "sha256-SpqEEuyrkzTqjIHwHrZE+Rs6ez2tzIeYkSY67zp6fcQ=",
+        "lastModified": 1789394839,
+        "narHash": "sha256-trdjVJKmDBbzgbP8pd+R7iKbGkdRu0nmXgQlBR/hEiU=",
         "owner": "Maroka-chan",
         "repo": "VPN-Confinement",
-        "rev": "cc37bcf5000e237709e725a9cda010a5cbce3111",
+        "rev": "a21f66ccd9f644c3770ccdf287cb380c00192628",
         "type": "github"
       },
       "original": {
