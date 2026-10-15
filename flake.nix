@@ -199,6 +199,7 @@
                   # keep-sorted start
                   common-nix
                   forgejo
+                  freshrss
                   home-assistant
                   home-manager
                   homelab
