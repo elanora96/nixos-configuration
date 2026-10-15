@@ -27,7 +27,6 @@
       options = "--delete-older-than 30d";
     };
     optimise.automatic = true;
-    settings.download-buffer-size = 524288000;
   };
 
   boot.loader = {

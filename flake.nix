@@ -205,6 +205,7 @@
                   hosts.inanna.home
                   hosts.inanna.system
                   kde
+                  lix
                   llama-cpp
                   nixflix
                   openssh

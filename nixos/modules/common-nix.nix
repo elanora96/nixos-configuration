@@ -6,6 +6,6 @@
       "nix-command"
       "flakes"
     ];
-    commit-lock-file-summary = "Lock update";
+    commit-lockfile-summary = "Lock update";
   };
 }
