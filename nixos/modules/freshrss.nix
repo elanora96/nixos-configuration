@@ -19,6 +19,7 @@ in
     webserver = "nginx";
     defaultUser = "el";
     passwordFile = config.sops.secrets."freshrss/password".path;
+    api.enable = true;
     extensions = with pkgs.freshrss-extensions; [
       reading-time
       youtube
