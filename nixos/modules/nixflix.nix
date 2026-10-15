@@ -198,7 +198,7 @@ in
       qbittorrent = {
         inherit downloadsDir;
         enable = true;
-        vpn.enable = false;
+        vpn.enable = true;
         password._secret = config.sops.secrets."qbittorrent/password".path;
         serverConfig = {
           LegalNotice.Accepted = true;
@@ -301,7 +301,7 @@ in
             ns = config.systemd.services.qbittorrent.vpnConfinement.vpnNamespace;
             qbHost = "http://${qbCfg.serverConfig.Preferences.WebUI.Address}:${toString config.services.qbittorrent.webuiPort}";
             qbUser = qbCfg.serverConfig.Preferences.WebUI.Username;
-            qbPassFile = config.sops.secrets."qbittorrent/app_password".path;
+            qbPassFile = config.sops.secrets."qbittorrent/password".path;
           in
           pkgs.writeShellScript "vpn-port-forward" ''
             QB_HOST="${qbHost}"

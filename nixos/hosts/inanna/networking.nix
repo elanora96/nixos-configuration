@@ -18,13 +18,4 @@ _: {
         ++ iThinkTheseWereForDevelopment;
     };
   };
-
-  services = {
-    mullvad-vpn = {
-      enable = true;
-      gui.enable = true;
-    };
-
-    resolved.enable = true;
-  };
 }
