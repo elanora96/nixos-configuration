@@ -34,6 +34,7 @@ in
     "sabnzb/nzb_key" = { };
     "sabnzb/password" = { };
     "sabnzb/username" = { };
+    "seerr/api_key" = { };
     "usenet/nzbgeek/api_key" = { };
     # keep-sorted end
   };
@@ -190,6 +191,11 @@ in
       forceSSL = true;
     };
     postgres.enable = true;
+    seerr = {
+      enable = true;
+      apiKey._secret = config.sops.secrets."seerr/api_key".path;
+      settings.users.defaultPermissions = 160;
+    };
     theme = {
       enable = true;
       name = "catppuccin-macchiato";
