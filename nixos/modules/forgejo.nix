@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -55,8 +54,7 @@ in
     };
   };
 
-  services.gitea-actions-runner = {
-    package = pkgs.forgejo-runner;
+  services.forgejo-runner = {
     instances.default = {
       enable = false;
       name = "jude";
