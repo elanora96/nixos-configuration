@@ -54,26 +54,27 @@ in
     };
   };
 
-  services.forgejo-runner = {
-    instances.default = {
-      enable = false;
-      name = "jude";
-      url = DOMAIN;
-      secrets = {
-        server.connections.default = {
-          token_url = config.sops.secrets."forgejo/runner-token".path;
-        };
-      };
-      labels = [
-        # "ubuntu-latest:docker://node:16-bullseye"
-        # "ubuntu-22.04:docker://node:16-bullseye"
-        # "ubuntu-20.04:docker://node:16-bullseye"
-        # "ubuntu-18.04:docker://node:16-buster"
-        ## optionally provide native execution on the host:
-        "native:host"
-      ];
-    };
-  };
+  #   services.forgejo-runner = {
+  #     instances.jude = {
+  #       enable = false;
+  #       runtimes.host = true;
+  #       secrets = {
+  #         server.connections.forgejo = {
+  #           url = DOMAIN;
+  #           uuid = "1b087231-a4a1-4591-b389-b988f58de246";
+  #           token_url = config.sops.secrets."forgejo/runner-token".path;
+  #         };
+  #       };
+  #       labels = [
+  #         # "ubuntu-latest:docker://node:16-bullseye"
+  #         # "ubuntu-22.04:docker://node:16-bullseye"
+  #         # "ubuntu-20.04:docker://node:16-bullseye"
+  #         # "ubuntu-18.04:docker://node:16-buster"
+  #         ## optionally provide native execution on the host:
+  #         "native:host"
+  #       ];
+  #     };
+  #   };
 
   services.nginx.virtualHosts.${cfg.settings.server.DOMAIN} = {
     forceSSL = true;
