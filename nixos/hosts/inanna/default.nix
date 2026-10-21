@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   config,
   ...
@@ -15,9 +14,8 @@
     ./bluetooth.nix
 
     # Hardware modules
-    ../../hardware/cpu-amd-r7-3700x
+    ../../hardware/mb-gigabyte-x570-aorus-elite.nix
     ../../hardware/gpu-nvidia-gtx-1070
-    inputs.nixos-hardware.nixosModules.common-pc-ssd
   ];
 
   nix = {
