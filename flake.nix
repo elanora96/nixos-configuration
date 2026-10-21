@@ -58,8 +58,7 @@
 
     # Declarative media server configuration manager for NixOS
     nixflix = {
-      # Temporarily use commit that doesn't have broken jellyfin plugin manifest
-      url = "github:kiriwalawren/nixflix?rev=39e75c77fb10dc00937ae2ecf71b6773e1455b88";
+      url = "github:kiriwalawren/nixflix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
