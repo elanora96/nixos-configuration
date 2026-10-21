@@ -210,6 +210,7 @@
                   nixflix
                   openssh
                   paperless
+                  patches
                   perSystem-pkgs
                   printing
                   protonmail
