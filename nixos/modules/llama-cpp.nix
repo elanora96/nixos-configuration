@@ -57,6 +57,17 @@ in
         repeat-penalty = "1.05";
         top-k = "80";
       };
+      "Qwen3.8-27B-GGUF" = {
+        hf-repo = "unsloth/Qwen3.8-27B-GGUF";
+        hf-file = "Qwen3.8-27B-Q8_0.gguf";
+        alias = "unsloth/Qwen3.8-27B-GGUF";
+        temp = "0.7";
+        top-p = "0.80";
+        top-k = "20";
+        min-p = "0.0";
+        presence-penalty = "1.5";
+        repeat-penalty = "1.0";
+      };
     };
   };
 
