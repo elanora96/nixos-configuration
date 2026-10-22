@@ -5,6 +5,7 @@ let
   LLAMA_CPP_DOMAIN = "llama-cpp.${homelab.domain}";
   package =
     (pkgs.llama-cpp.override {
+      blasSupport = true;
       cudaSupport = true;
       # Needed for Pascal
       cudaPackages = pkgs.cudaPackages_12;
