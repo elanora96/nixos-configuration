@@ -101,6 +101,7 @@
       };
       nixvim = {
         enable = true;
+        nixpkgs.useGlobalPackages = true;
         imports = nixvimRelativeImports;
       };
       pandoc.enable = true;
