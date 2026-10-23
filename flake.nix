@@ -7,7 +7,10 @@
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
 
     # NixOS modules covering hardware quirks
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Manage a user environment using Nix
     home-manager = {
@@ -75,6 +78,7 @@
     };
 
     # Nix packages and modules for Gram extensions
+    # Don't follow nixpkgs so cache can be used
     nix-gram-extensions.url = "git+https://codeberg.org/niklaskorz/nix-gram-extensions";
 
   };
