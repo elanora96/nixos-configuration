@@ -16,6 +16,7 @@
       mkvtoolnix
       nicotine-plus
       orca-slicer
+      projectm_3
       signal-desktop
       tauon
       thunderbird
