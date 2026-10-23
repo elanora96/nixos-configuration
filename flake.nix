@@ -81,6 +81,13 @@
     # Don't follow nixpkgs so cache can be used
     nix-gram-extensions.url = "git+https://codeberg.org/niklaskorz/nix-gram-extensions";
 
+    # AI coding agents and development tools. Automatically updated daily.
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      # Don't follow nixpkgs so cache can be used
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+    };
   };
 
   outputs =
