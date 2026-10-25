@@ -29,7 +29,21 @@
       nvidiaPersistenced = true;
       nvidiaSettings = true;
       # 580.xx finishes support for Pascal
-      package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+      # New patchelf breaks nvidia-smi...
+      # https://github.com/NixOS/nixpkgs/pull/576397
+      package = config.boot.kernelPackages.nvidiaPackages.legacy_580.overrideAttrs (old: {
+        builder = pkgs.runCommand "nvidia-x11-builder.sh" { } ''
+          cp ${old.builder} $out
+          chmod u+w $out
+          patch $out ${
+            pkgs.fetchpatch {
+              url = "https://github.com/NixOS/nixpkgs/commit/ae9ba0c0ab398dd76b2e34721c9c19fbed16e0b1.patch";
+              relative = "pkgs/os-specific/linux/nvidia-x11";
+              hash = "sha256-i7B44In5P74RU4GKVWmVO4VnughlbT+4PDpqzry3hcc=";
+            }
+          }
+        '';
+      });
     };
   };
 
