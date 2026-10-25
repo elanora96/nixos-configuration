@@ -1,15 +1,6 @@
 { pkgs, ... }:
 {
   services = {
-    avahi = {
-      enable = true;
-      openFirewall = true;
-      reflector = true;
-      publish = {
-        enable = true;
-        userServices = true;
-      };
-    };
     snapserver = {
       enable = true;
       settings = {

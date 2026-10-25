@@ -45,10 +45,12 @@ _: {
   services.avahi = {
     enable = true;
     openFirewall = true;
-    reflector = true;
-    publish = {
-      enable = true;
-      userServices = true;
+    settings = {
+      reflector.enable-reflector = true;
+      publish = {
+        disable-publishing = false;
+        publish-addresses = true;
+      };
     };
   };
 }
