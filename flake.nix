@@ -88,6 +88,12 @@
       inputs.flake-parts.follows = "flake-parts";
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
+
+    # Portable file server with accelerated resumable uploads, dedup, WebDAV, SFTP, FTP, TFTP, zeroconf, media indexer, thumbnails++ all in one file
+    copyparty = {
+      url = "github:9001/copyparty";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -129,7 +135,7 @@
             # pkgs config
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
-              overlays = [ ];
+              overlays = [ inputs.copyparty.overlays.default ];
               config.allowUnfree = true;
               config.allowUnfreePredicate = _: true;
             };
@@ -206,6 +212,7 @@
                 modules = with nixosModules; [
                   # keep-sorted start
                   common-nix
+                  copyparty
                   flatpak
                   forgejo
                   freshrss
