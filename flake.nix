@@ -206,6 +206,7 @@
                 modules = with nixosModules; [
                   # keep-sorted start
                   common-nix
+                  flatpak
                   forgejo
                   freshrss
                   home-assistant
