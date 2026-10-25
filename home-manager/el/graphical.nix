@@ -15,8 +15,8 @@
       libreoffice-qt-stable
       mkvtoolnix
       nicotine-plus
-      orca-slicer
       projectm_3
+      prusa-slicer
       signal-desktop
       tauon
       thunderbird
