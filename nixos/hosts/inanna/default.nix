@@ -11,7 +11,6 @@
     ./programs.nix
     ./networking.nix
     ./audio.nix
-    ./bluetooth.nix
 
     # Hardware modules
     ../../hardware/mb-gigabyte-x570-aorus-elite.nix
@@ -47,6 +46,11 @@
         config.services.syncthing.group
       ];
     };
+  };
+
+  bluetooth = {
+    enable = true;
+    gaming = true;
   };
 
   homelab = {

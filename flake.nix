@@ -211,6 +211,7 @@
                 specialArgs = { inherit inputs; };
                 modules = with nixosModules; [
                   # keep-sorted start
+                  bluetooth
                   common-nix
                   copyparty
                   flatpak
