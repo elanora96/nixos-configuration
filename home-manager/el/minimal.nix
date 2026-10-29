@@ -40,7 +40,16 @@
     in
     {
       # keep-sorted start block=yes
-      bat.enable = true;
+      bat = {
+        enable = true;
+        extraPackages = with pkgs.bat-extras; [
+          batdiff
+          batman
+          batgrep
+          batwatch
+          batpipe
+        ];
+      };
       bottom.enable = true;
       btop.enable = true;
       delta = {
@@ -195,6 +204,14 @@
         enableCompletion = true;
         defaultKeymap = "emacs";
         fastSyntaxHighlighting.enable = true;
+        shellGlobalAliases = {
+          # Use bat to colorize help text
+          "-h" = "-h 2>&1 | bat --language=help --style=plain";
+          "--help" = "--help 2>&1 | bat --language=help --style=plain";
+        };
+        sessionVariables = {
+          MANPAGER = "bat -plman";
+        };
       };
       # keep-sorted end
     };
