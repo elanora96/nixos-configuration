@@ -44,21 +44,21 @@ in
 
     volumes = {
       # create a volume at "/" (the webroot), which will
-      "/" = {
-        # share the contents of "/srv/copyparty"
-        path = "/";
-        # see `copyparty --help-accounts` for available options
-        access.rw = "@admin";
-        # see `copyparty --help-flags` for available options
-        flags = {
-          # "fk" enables filekeys (necessary for upget permission) (4 chars long)
-          fk = 4;
-          # scan for new files every 60sec
-          scan = 60;
-          # volflag "e2d" enables the uploads database
-          e2d = true;
-        };
-      };
+      # "/" = {
+      #   # share the contents of "/srv/copyparty"
+      #   path = "/";
+      #   # see `copyparty --help-accounts` for available options
+      #   access.rw = "@admin";
+      #   # see `copyparty --help-flags` for available options
+      #   flags = {
+      #     # "fk" enables filekeys (necessary for upget permission) (4 chars long)
+      #     fk = 4;
+      #     # scan for new files every 60sec
+      #     scan = 60;
+      #     # volflag "e2d" enables the uploads database
+      #     e2d = true;
+      #   };
+      # };
       "/public" = {
         # share the contents of "/srv/copyparty"
         path = "/mnt/media/srv/copyparty";
