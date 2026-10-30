@@ -25,6 +25,7 @@ in
     "jellyfin/el_password" = { };
     "lidarr/api_key" = { };
     "lidarr/password" = { };
+    "navidrome/passwords/el" = { };
     "opensubtitles/api_key" = { };
     "opensubtitles/password" = { };
     "prowlarr/api_key" = { };
@@ -182,6 +183,19 @@ in
       config = {
         apiKey._secret = config.sops.secrets."lidarr/api_key".path;
         hostConfig.password._secret = config.sops.secrets."lidarr/password".path;
+      };
+    };
+    navidrome = {
+      enable = true;
+      plugins.lyrics.enable = true;
+      users.el = {
+        isAdmin = true;
+        userName = "el";
+        password._secret = config.sops.secrets."navidrome/passwords/el".path;
+      };
+      settings = {
+        DefaultTheme = "Catppuccin Macchiato";
+        Plugins.LogLevel = "info";
       };
     };
     nginx = {
