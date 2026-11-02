@@ -51,6 +51,7 @@ in
     serviceDependencies = [ "mnt-media.mount" ];
 
     # keep-sorted start block=yes
+    flaresolverr.enable = true;
     jellyfin = {
       enable = true;
       apiKey._secret = config.sops.secrets."jellyfin/api_key".path;

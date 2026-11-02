@@ -34,10 +34,22 @@ in
             sha256 = "pk4E7xl5DqujJxHiMuNO9m144As+F+9lii47nYWZbLc=";
           };
         };
+        freshrss-flaresolverr = buildFreshRssExtension {
+          FreshRssExtUniqueId = "freshrss-flaresolverr";
+          pname = "xExtension-FlareSolverr";
+          version = "0.4.3";
+          src = pkgs.fetchFromGitHub {
+            owner = "ravenscroftj";
+            repo = "freshrss-flaresolverr-extension";
+            rev = "f01c02dff8cf26dc6e5a52fe3443aa321a3a620a";
+            sha256 = "GiC8mYBN/Y22/tB++HLMHUKJViMV9h2hNrI5upXodNM=";
+          };
+        };
       in
       [
         reading-time
         latextSupport
+        freshrss-flaresolverr
       ];
   };
 
