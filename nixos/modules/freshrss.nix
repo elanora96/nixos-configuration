@@ -45,11 +45,23 @@ in
             sha256 = "GiC8mYBN/Y22/tB++HLMHUKJViMV9h2hNrI5upXodNM=";
           };
         };
+        AppleMusicArtist = buildFreshRssExtension {
+          FreshRssExtUniqueId = "AppleMusicArtist";
+          pname = "xExtension-AppleMusicArtist";
+          version = "0.0.1";
+          src = pkgs.fetchFromCodeberg {
+            owner = "sanpo";
+            repo = "xExtension-AppleMusicArtist";
+            rev = "9389b29800274bce22a02a55250f9c3d74213755";
+            sha256 = "4r+t9lwQXakbCkTZsVDCmgDcwxS4yYE1TH1HhKC6V9E=";
+          };
+        };
       in
       [
         reading-time
         latextSupport
         freshrss-flaresolverr
+        AppleMusicArtist
       ];
   };
 
