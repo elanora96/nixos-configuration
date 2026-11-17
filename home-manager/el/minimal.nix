@@ -18,8 +18,10 @@
         chezmoi
         corefonts
         dust
+        isd
         jellyfin-ffmpeg
         meslo-lgs-nf
+        miniserve
         nil
         nix-tree
         nixd
