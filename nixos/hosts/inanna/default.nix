@@ -10,7 +10,6 @@
     ./packages.nix
     ./programs.nix
     ./networking.nix
-    ./audio.nix
 
     # Hardware modules
     ../../hardware/mb-gigabyte-x570-aorus-elite.nix

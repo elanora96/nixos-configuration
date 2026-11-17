@@ -211,6 +211,8 @@
                 specialArgs = { inherit inputs; };
                 modules = with nixosModules; [
                   # keep-sorted start
+                  audio
+                  avahi
                   bluetooth
                   common-nix
                   copyparty

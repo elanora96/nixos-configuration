@@ -1,7 +1,6 @@
 _: {
   programs = {
     # keep-sorted start block=yes
-
     appimage = {
       enable = true;
       binfmt = true;
@@ -39,18 +38,5 @@ _: {
       syntaxHighlighting.enable = true;
     };
     # keep-sorted end
-  };
-
-  # Required for iDescriptor
-  services.avahi = {
-    enable = true;
-    openFirewall = true;
-    settings = {
-      reflector.enable-reflector = true;
-      publish = {
-        disable-publishing = false;
-        publish-addresses = true;
-      };
-    };
   };
 }
