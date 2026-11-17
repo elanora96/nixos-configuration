@@ -1,9 +1,11 @@
 { pkgs, ... }:
 {
-  # for pactl
   environment.systemPackages = with pkgs; [
+    # for pactl
     pulseaudio
     pamixer
+    # for jack
+    pipewire.jack
   ];
 
   services = {
@@ -15,7 +17,6 @@
         support32Bit = true;
       };
       pulse.enable = true;
-      jack.enable = true;
 
       # Airplay
       # opens UDP ports 6001-6002
