@@ -14,7 +14,7 @@ update:
     git switch --create flake-update
     nix flake update --commit-lock-file
 
-    nh os switch --ask
+    sudo nixos-rebuild switch --flake .
 
     git switch main
     git rebase flake-update
