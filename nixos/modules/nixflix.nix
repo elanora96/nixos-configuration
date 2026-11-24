@@ -281,7 +281,7 @@ in
     vpn = {
       enable = true;
       wgConfFile = config.sops.secrets."wireguard_conf".path;
-      accessibleFrom = [
+      allowedIngress = [
         "192.0.0.0/24"
         "127.0.0.0/24"
         "100.0.0.0/24"
