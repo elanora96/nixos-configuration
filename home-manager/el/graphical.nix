@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./minimal.nix ];
+  imports = [
+    ./minimal.nix
+    ../modules/inkscape.nix
+  ];
 
   home = {
     packages = with pkgs; [
