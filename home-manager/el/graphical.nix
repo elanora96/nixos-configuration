@@ -57,6 +57,13 @@
     };
     mpv = {
       enable = true;
+      scripts = with pkgs.mpvScripts; [
+        mpris
+        sponsorblock
+        autosub
+        thumbfast
+        videoclip
+      ];
       config = {
         sub-auto = "fuzzy";
       };
