@@ -235,6 +235,7 @@
                   printing
                   protonmail
                   region
+                  romm
                   scx
                   sops
                   stylix

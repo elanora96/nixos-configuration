@@ -13,6 +13,10 @@
       age.keyFile = "/home/el/.config/sops/age/keys.txt";
 
       secrets = {
+        "ROMM_ENVIRONMENT_FILE" = {
+          sopsFile = secretsFolderPath + /romm.env;
+          format = "dotenv";
+        };
         "wireguard_conf" = {
           sopsFile = secretsFolderPath + /wireguard.conf;
           format = "binary";
